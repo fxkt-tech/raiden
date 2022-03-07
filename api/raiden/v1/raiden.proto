@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package raiden.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "fxkt.tech/raiden/api/raiden/v1;v1";
+
+service MessageSystem {
+  rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {
+    option (google.api.http) = {
+      post: "/raiden/v1/send_msg",
+      body: "*",
+    };
+  }
+}
+
+message SendMessageRequest {
+  // 发送方用户id
+  int64 sender_uid = 1;
+  // 消息体
+  string msg = 2;
+  // 接收方用户id
+  int64 recv_uid = 3;
+}
+
+message SendMessageReply {}

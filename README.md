@@ -1,2 +1,3 @@
-# raiden
-Message System.
+# Raiden Blade !
+
+Re:Zero - Develop a Message System.

@@ -1,0 +1,47 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/apps/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: MessageSystem API
+    version: 0.0.1
+paths:
+    /raiden/v1/send_msg:
+        post:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_SendMessage
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SendMessageRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SendMessageReply'
+components:
+    schemas:
+        SendMessageReply:
+            type: object
+            properties: {}
+        SendMessageRequest:
+            type: object
+            properties:
+                senderUid:
+                    type: integer
+                    description: 发送方用户id
+                    format: int64
+                msg:
+                    type: string
+                    description: 消息体
+                recvUid:
+                    type: integer
+                    description: 接收方用户id
+                    format: int64
+tags:
+    - name: MessageSystem
