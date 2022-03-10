@@ -18,12 +18,56 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type MessageSystemHTTPServer interface {
+	ChatHistory(context.Context, *ChatHistoryRequest) (*ChatHistoryReply, error)
+	Friends(context.Context, *FriendsRequest) (*FriendsReply, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageReply, error)
+	Subscribe(context.Context, *SubscribeRequest) (*SubscribeReply, error)
 }
 
 func RegisterMessageSystemHTTPServer(s *http.Server, srv MessageSystemHTTPServer) {
 	r := s.Route("/")
-	r.POST("/raiden/v1/send_msg", _MessageSystem_SendMessage0_HTTP_Handler(srv))
+	r.GET("/msgsys/v1/friends", _MessageSystem_Friends0_HTTP_Handler(srv))
+	r.GET("/msgsys/v1/chat_history", _MessageSystem_ChatHistory0_HTTP_Handler(srv))
+	r.POST("/msgsys/v1/send_msg", _MessageSystem_SendMessage0_HTTP_Handler(srv))
+	r.POST("/msgsys/v1/subscribe", _MessageSystem_Subscribe0_HTTP_Handler(srv))
+}
+
+func _MessageSystem_Friends0_HTTP_Handler(srv MessageSystemHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in FriendsRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/raiden.v1.MessageSystem/Friends")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Friends(ctx, req.(*FriendsRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*FriendsReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _MessageSystem_ChatHistory0_HTTP_Handler(srv MessageSystemHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ChatHistoryRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/raiden.v1.MessageSystem/ChatHistory")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ChatHistory(ctx, req.(*ChatHistoryRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ChatHistoryReply)
+		return ctx.Result(200, reply)
+	}
 }
 
 func _MessageSystem_SendMessage0_HTTP_Handler(srv MessageSystemHTTPServer) func(ctx http.Context) error {
@@ -45,8 +89,30 @@ func _MessageSystem_SendMessage0_HTTP_Handler(srv MessageSystemHTTPServer) func(
 	}
 }
 
+func _MessageSystem_Subscribe0_HTTP_Handler(srv MessageSystemHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in SubscribeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/raiden.v1.MessageSystem/Subscribe")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Subscribe(ctx, req.(*SubscribeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SubscribeReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type MessageSystemHTTPClient interface {
+	ChatHistory(ctx context.Context, req *ChatHistoryRequest, opts ...http.CallOption) (rsp *ChatHistoryReply, err error)
+	Friends(ctx context.Context, req *FriendsRequest, opts ...http.CallOption) (rsp *FriendsReply, err error)
 	SendMessage(ctx context.Context, req *SendMessageRequest, opts ...http.CallOption) (rsp *SendMessageReply, err error)
+	Subscribe(ctx context.Context, req *SubscribeRequest, opts ...http.CallOption) (rsp *SubscribeReply, err error)
 }
 
 type MessageSystemHTTPClientImpl struct {
@@ -57,11 +123,50 @@ func NewMessageSystemHTTPClient(client *http.Client) MessageSystemHTTPClient {
 	return &MessageSystemHTTPClientImpl{client}
 }
 
+func (c *MessageSystemHTTPClientImpl) ChatHistory(ctx context.Context, in *ChatHistoryRequest, opts ...http.CallOption) (*ChatHistoryReply, error) {
+	var out ChatHistoryReply
+	pattern := "/msgsys/v1/chat_history"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/raiden.v1.MessageSystem/ChatHistory"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *MessageSystemHTTPClientImpl) Friends(ctx context.Context, in *FriendsRequest, opts ...http.CallOption) (*FriendsReply, error) {
+	var out FriendsReply
+	pattern := "/msgsys/v1/friends"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/raiden.v1.MessageSystem/Friends"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *MessageSystemHTTPClientImpl) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...http.CallOption) (*SendMessageReply, error) {
 	var out SendMessageReply
-	pattern := "/raiden/v1/send_msg"
+	pattern := "/msgsys/v1/send_msg"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/raiden.v1.MessageSystem/SendMessage"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *MessageSystemHTTPClientImpl) Subscribe(ctx context.Context, in *SubscribeRequest, opts ...http.CallOption) (*SubscribeReply, error) {
+	var out SubscribeReply
+	pattern := "/msgsys/v1/subscribe"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/raiden.v1.MessageSystem/Subscribe"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

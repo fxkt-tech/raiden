@@ -6,7 +6,68 @@ info:
     title: MessageSystem API
     version: 0.0.1
 paths:
-    /raiden/v1/send_msg:
+    /msgsys/v1/chat_history:
+        get:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_ChatHistory
+            parameters:
+                - name: myUid
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: friendUid
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: count
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChatHistoryReply'
+    /msgsys/v1/friends:
+        get:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_Friends
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: count
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FriendsReply'
+    /msgsys/v1/send_msg:
         post:
             tags:
                 - MessageSystem
@@ -24,8 +85,54 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SendMessageReply'
+    /msgsys/v1/subscribe:
+        post:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_Subscribe
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/SubscribeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/SubscribeReply'
 components:
     schemas:
+        ChatHistoryReply:
+            type: object
+            properties:
+                msgs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Message'
+        Content:
+            type: object
+            properties:
+                text:
+                    type: string
+        FriendsReply:
+            type: object
+            properties:
+                friends:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/User'
+        Message:
+            type: object
+            properties:
+                sender:
+                    $ref: '#/components/schemas/User'
+                recver:
+                    $ref: '#/components/schemas/User'
+                content:
+                    $ref: '#/components/schemas/Content'
         SendMessageReply:
             type: object
             properties: {}
@@ -34,14 +141,25 @@ components:
             properties:
                 senderUid:
                     type: integer
-                    description: 发送方用户id
-                    format: int64
-                msg:
-                    type: string
-                    description: 消息体
-                recvUid:
+                    format: uint32
+                content:
+                    $ref: '#/components/schemas/Content'
+                recverUid:
                     type: integer
-                    description: 接收方用户id
-                    format: int64
+                    format: uint32
+        SubscribeReply:
+            type: object
+            properties: {}
+        SubscribeRequest:
+            type: object
+            properties: {}
+        User:
+            type: object
+            properties:
+                uid:
+                    type: integer
+                    format: uint32
+                nick:
+                    type: string
 tags:
     - name: MessageSystem

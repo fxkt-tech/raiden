@@ -22,7 +22,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageSystemClient interface {
+	Friends(ctx context.Context, in *FriendsRequest, opts ...grpc.CallOption) (*FriendsReply, error)
+	ChatHistory(ctx context.Context, in *ChatHistoryRequest, opts ...grpc.CallOption) (*ChatHistoryReply, error)
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageReply, error)
+	Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*SubscribeReply, error)
 }
 
 type messageSystemClient struct {
@@ -31,6 +34,24 @@ type messageSystemClient struct {
 
 func NewMessageSystemClient(cc grpc.ClientConnInterface) MessageSystemClient {
 	return &messageSystemClient{cc}
+}
+
+func (c *messageSystemClient) Friends(ctx context.Context, in *FriendsRequest, opts ...grpc.CallOption) (*FriendsReply, error) {
+	out := new(FriendsReply)
+	err := c.cc.Invoke(ctx, "/raiden.v1.MessageSystem/Friends", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageSystemClient) ChatHistory(ctx context.Context, in *ChatHistoryRequest, opts ...grpc.CallOption) (*ChatHistoryReply, error) {
+	out := new(ChatHistoryReply)
+	err := c.cc.Invoke(ctx, "/raiden.v1.MessageSystem/ChatHistory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *messageSystemClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageReply, error) {
@@ -42,11 +63,23 @@ func (c *messageSystemClient) SendMessage(ctx context.Context, in *SendMessageRe
 	return out, nil
 }
 
+func (c *messageSystemClient) Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*SubscribeReply, error) {
+	out := new(SubscribeReply)
+	err := c.cc.Invoke(ctx, "/raiden.v1.MessageSystem/Subscribe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageSystemServer is the server API for MessageSystem service.
 // All implementations must embed UnimplementedMessageSystemServer
 // for forward compatibility
 type MessageSystemServer interface {
+	Friends(context.Context, *FriendsRequest) (*FriendsReply, error)
+	ChatHistory(context.Context, *ChatHistoryRequest) (*ChatHistoryReply, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageReply, error)
+	Subscribe(context.Context, *SubscribeRequest) (*SubscribeReply, error)
 	mustEmbedUnimplementedMessageSystemServer()
 }
 
@@ -54,8 +87,17 @@ type MessageSystemServer interface {
 type UnimplementedMessageSystemServer struct {
 }
 
+func (UnimplementedMessageSystemServer) Friends(context.Context, *FriendsRequest) (*FriendsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Friends not implemented")
+}
+func (UnimplementedMessageSystemServer) ChatHistory(context.Context, *ChatHistoryRequest) (*ChatHistoryReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChatHistory not implemented")
+}
 func (UnimplementedMessageSystemServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedMessageSystemServer) Subscribe(context.Context, *SubscribeRequest) (*SubscribeReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
 }
 func (UnimplementedMessageSystemServer) mustEmbedUnimplementedMessageSystemServer() {}
 
@@ -68,6 +110,42 @@ type UnsafeMessageSystemServer interface {
 
 func RegisterMessageSystemServer(s grpc.ServiceRegistrar, srv MessageSystemServer) {
 	s.RegisterService(&MessageSystem_ServiceDesc, srv)
+}
+
+func _MessageSystem_Friends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FriendsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageSystemServer).Friends(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/raiden.v1.MessageSystem/Friends",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageSystemServer).Friends(ctx, req.(*FriendsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageSystem_ChatHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChatHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageSystemServer).ChatHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/raiden.v1.MessageSystem/ChatHistory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageSystemServer).ChatHistory(ctx, req.(*ChatHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _MessageSystem_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -88,6 +166,24 @@ func _MessageSystem_SendMessage_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageSystem_Subscribe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubscribeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageSystemServer).Subscribe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/raiden.v1.MessageSystem/Subscribe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageSystemServer).Subscribe(ctx, req.(*SubscribeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageSystem_ServiceDesc is the grpc.ServiceDesc for MessageSystem service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -96,8 +192,20 @@ var MessageSystem_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MessageSystemServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Friends",
+			Handler:    _MessageSystem_Friends_Handler,
+		},
+		{
+			MethodName: "ChatHistory",
+			Handler:    _MessageSystem_ChatHistory_Handler,
+		},
+		{
 			MethodName: "SendMessage",
 			Handler:    _MessageSystem_SendMessage_Handler,
+		},
+		{
+			MethodName: "Subscribe",
+			Handler:    _MessageSystem_Subscribe_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

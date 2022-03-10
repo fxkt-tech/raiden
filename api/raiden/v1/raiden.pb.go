@@ -21,23 +21,413 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type User struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uid  uint32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Nick string `protobuf:"bytes,2,opt,name=nick,proto3" json:"nick,omitempty"`
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *User) GetUid() uint32 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+func (x *User) GetNick() string {
+	if x != nil {
+		return x.Nick
+	}
+	return ""
+}
+
+type Message struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sender  *User    `protobuf:"bytes,1,opt,name=sender,proto3" json:"sender,omitempty"`
+	Recver  *User    `protobuf:"bytes,2,opt,name=recver,proto3" json:"recver,omitempty"`
+	Content *Content `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
+}
+
+func (x *Message) Reset() {
+	*x = Message{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Message) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Message) ProtoMessage() {}
+
+func (x *Message) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Message.ProtoReflect.Descriptor instead.
+func (*Message) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Message) GetSender() *User {
+	if x != nil {
+		return x.Sender
+	}
+	return nil
+}
+
+func (x *Message) GetRecver() *User {
+	if x != nil {
+		return x.Recver
+	}
+	return nil
+}
+
+func (x *Message) GetContent() *Content {
+	if x != nil {
+		return x.Content
+	}
+	return nil
+}
+
+type Content struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Text string `protobuf:"bytes,1,opt,name=text,proto3" json:"text,omitempty"`
+}
+
+func (x *Content) Reset() {
+	*x = Content{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Content) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Content) ProtoMessage() {}
+
+func (x *Content) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Content.ProtoReflect.Descriptor instead.
+func (*Content) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Content) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+type FriendsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uid   uint32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Page  uint32 `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	Count uint32 `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (x *FriendsRequest) Reset() {
+	*x = FriendsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FriendsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FriendsRequest) ProtoMessage() {}
+
+func (x *FriendsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FriendsRequest.ProtoReflect.Descriptor instead.
+func (*FriendsRequest) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *FriendsRequest) GetUid() uint32 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+func (x *FriendsRequest) GetPage() uint32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FriendsRequest) GetCount() uint32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type FriendsReply struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Friends []*User `protobuf:"bytes,1,rep,name=friends,proto3" json:"friends,omitempty"`
+}
+
+func (x *FriendsReply) Reset() {
+	*x = FriendsReply{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FriendsReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FriendsReply) ProtoMessage() {}
+
+func (x *FriendsReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FriendsReply.ProtoReflect.Descriptor instead.
+func (*FriendsReply) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FriendsReply) GetFriends() []*User {
+	if x != nil {
+		return x.Friends
+	}
+	return nil
+}
+
+type ChatHistoryRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MyUid     uint32 `protobuf:"varint,1,opt,name=my_uid,json=myUid,proto3" json:"my_uid,omitempty"`
+	FriendUid uint32 `protobuf:"varint,2,opt,name=friend_uid,json=friendUid,proto3" json:"friend_uid,omitempty"`
+	Page      uint32 `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	Count     uint32 `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (x *ChatHistoryRequest) Reset() {
+	*x = ChatHistoryRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ChatHistoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatHistoryRequest) ProtoMessage() {}
+
+func (x *ChatHistoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatHistoryRequest.ProtoReflect.Descriptor instead.
+func (*ChatHistoryRequest) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ChatHistoryRequest) GetMyUid() uint32 {
+	if x != nil {
+		return x.MyUid
+	}
+	return 0
+}
+
+func (x *ChatHistoryRequest) GetFriendUid() uint32 {
+	if x != nil {
+		return x.FriendUid
+	}
+	return 0
+}
+
+func (x *ChatHistoryRequest) GetPage() uint32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ChatHistoryRequest) GetCount() uint32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type ChatHistoryReply struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Msgs []*Message `protobuf:"bytes,1,rep,name=msgs,proto3" json:"msgs,omitempty"`
+}
+
+func (x *ChatHistoryReply) Reset() {
+	*x = ChatHistoryReply{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ChatHistoryReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatHistoryReply) ProtoMessage() {}
+
+func (x *ChatHistoryReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatHistoryReply.ProtoReflect.Descriptor instead.
+func (*ChatHistoryReply) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ChatHistoryReply) GetMsgs() []*Message {
+	if x != nil {
+		return x.Msgs
+	}
+	return nil
+}
+
 type SendMessageRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 发送方用户id
-	SenderUid int64 `protobuf:"varint,1,opt,name=sender_uid,json=senderUid,proto3" json:"sender_uid,omitempty"`
-	// 消息体
-	Msg string `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
-	// 接收方用户id
-	RecvUid int64 `protobuf:"varint,3,opt,name=recv_uid,json=recvUid,proto3" json:"recv_uid,omitempty"`
+	SenderUid uint32   `protobuf:"varint,1,opt,name=sender_uid,json=senderUid,proto3" json:"sender_uid,omitempty"`
+	Content   *Content `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	RecverUid uint32   `protobuf:"varint,3,opt,name=recver_uid,json=recverUid,proto3" json:"recver_uid,omitempty"`
 }
 
 func (x *SendMessageRequest) Reset() {
 	*x = SendMessageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_raiden_v1_raiden_proto_msgTypes[0]
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -50,7 +440,7 @@ func (x *SendMessageRequest) String() string {
 func (*SendMessageRequest) ProtoMessage() {}
 
 func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_raiden_v1_raiden_proto_msgTypes[0]
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,26 +453,26 @@ func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageRequest.ProtoReflect.Descriptor instead.
 func (*SendMessageRequest) Descriptor() ([]byte, []int) {
-	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{0}
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SendMessageRequest) GetSenderUid() int64 {
+func (x *SendMessageRequest) GetSenderUid() uint32 {
 	if x != nil {
 		return x.SenderUid
 	}
 	return 0
 }
 
-func (x *SendMessageRequest) GetMsg() string {
+func (x *SendMessageRequest) GetContent() *Content {
 	if x != nil {
-		return x.Msg
+		return x.Content
 	}
-	return ""
+	return nil
 }
 
-func (x *SendMessageRequest) GetRecvUid() int64 {
+func (x *SendMessageRequest) GetRecverUid() uint32 {
 	if x != nil {
-		return x.RecvUid
+		return x.RecverUid
 	}
 	return 0
 }
@@ -96,7 +486,7 @@ type SendMessageReply struct {
 func (x *SendMessageReply) Reset() {
 	*x = SendMessageReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_raiden_v1_raiden_proto_msgTypes[1]
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -109,7 +499,7 @@ func (x *SendMessageReply) String() string {
 func (*SendMessageReply) ProtoMessage() {}
 
 func (x *SendMessageReply) ProtoReflect() protoreflect.Message {
-	mi := &file_api_raiden_v1_raiden_proto_msgTypes[1]
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +512,83 @@ func (x *SendMessageReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageReply.ProtoReflect.Descriptor instead.
 func (*SendMessageReply) Descriptor() ([]byte, []int) {
-	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{1}
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{8}
+}
+
+type SubscribeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SubscribeRequest) Reset() {
+	*x = SubscribeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SubscribeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeRequest) ProtoMessage() {}
+
+func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeRequest.ProtoReflect.Descriptor instead.
+func (*SubscribeRequest) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{9}
+}
+
+type SubscribeReply struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SubscribeReply) Reset() {
+	*x = SubscribeReply{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_raiden_v1_raiden_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SubscribeReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SubscribeReply) ProtoMessage() {}
+
+func (x *SubscribeReply) ProtoReflect() protoreflect.Message {
+	mi := &file_api_raiden_v1_raiden_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SubscribeReply.ProtoReflect.Descriptor instead.
+func (*SubscribeReply) Descriptor() ([]byte, []int) {
+	return file_api_raiden_v1_raiden_proto_rawDescGZIP(), []int{10}
 }
 
 var File_api_raiden_v1_raiden_proto protoreflect.FileDescriptor
@@ -132,25 +598,81 @@ var file_api_raiden_v1_raiden_proto_rawDesc = []byte{
 	0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x09, 0x72, 0x61,
 	0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x60, 0x0a, 0x12, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73,
-	0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
-	0x09, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x55, 0x69, 0x64, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73,
-	0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x19, 0x0a, 0x08,
-	0x72, 0x65, 0x63, 0x76, 0x5f, 0x75, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07,
-	0x72, 0x65, 0x63, 0x76, 0x55, 0x69, 0x64, 0x22, 0x12, 0x0a, 0x10, 0x53, 0x65, 0x6e, 0x64, 0x4d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x32, 0x7a, 0x0a, 0x0d, 0x4d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x12, 0x69, 0x0a, 0x0b,
-	0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1d, 0x2e, 0x72, 0x61,
-	0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x72, 0x61, 0x69,
-	0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x22,
-	0x13, 0x2f, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x2f, 0x73, 0x65, 0x6e, 0x64,
-	0x5f, 0x6d, 0x73, 0x67, 0x3a, 0x01, 0x2a, 0x42, 0x23, 0x5a, 0x21, 0x66, 0x78, 0x6b, 0x74, 0x2e,
-	0x74, 0x65, 0x63, 0x68, 0x2f, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2f, 0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2c, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x10, 0x0a,
+	0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x75, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x69, 0x63, 0x6b, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x69, 0x63, 0x6b, 0x22, 0x89, 0x01, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12,
+	0x27, 0x0a, 0x06, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0f, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x06, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x12, 0x27, 0x0a, 0x06, 0x72, 0x65, 0x63, 0x76,
+	0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65,
+	0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x06, 0x72, 0x65, 0x63, 0x76, 0x65,
+	0x72, 0x12, 0x2c, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x12, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x43,
+	0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x22,
+	0x1d, 0x0a, 0x07, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65,
+	0x78, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x22, 0x4c,
+	0x0a, 0x0e, 0x46, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x10, 0x0a, 0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x75,
+	0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d,
+	0x52, 0x04, 0x70, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x39, 0x0a, 0x0c,
+	0x46, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x29, 0x0a, 0x07,
+	0x66, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e,
+	0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x07,
+	0x66, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x73, 0x22, 0x74, 0x0a, 0x12, 0x43, 0x68, 0x61, 0x74, 0x48,
+	0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x15, 0x0a,
+	0x06, 0x6d, 0x79, 0x5f, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x6d,
+	0x79, 0x55, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x66, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x5f, 0x75,
+	0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x66, 0x72, 0x69, 0x65, 0x6e, 0x64,
+	0x55, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x04, 0x70, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x3a, 0x0a,
+	0x10, 0x43, 0x68, 0x61, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x70, 0x6c,
+	0x79, 0x12, 0x26, 0x0a, 0x04, 0x6d, 0x73, 0x67, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x12, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x52, 0x04, 0x6d, 0x73, 0x67, 0x73, 0x22, 0x80, 0x01, 0x0a, 0x12, 0x53, 0x65,
+	0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x75, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x55, 0x69, 0x64, 0x12,
+	0x2c, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x12, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e,
+	0x74, 0x65, 0x6e, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1d, 0x0a,
+	0x0a, 0x72, 0x65, 0x63, 0x76, 0x65, 0x72, 0x5f, 0x75, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x09, 0x72, 0x65, 0x63, 0x76, 0x65, 0x72, 0x55, 0x69, 0x64, 0x22, 0x12, 0x0a, 0x10,
+	0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79,
+	0x22, 0x12, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x22, 0x10, 0x0a, 0x0e, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62,
+	0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x32, 0xa7, 0x03, 0x0a, 0x0d, 0x4d, 0x65, 0x73, 0x73, 0x61,
+	0x67, 0x65, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x12, 0x59, 0x0a, 0x07, 0x46, 0x72, 0x69, 0x65,
+	0x6e, 0x64, 0x73, 0x12, 0x19, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e,
+	0x46, 0x72, 0x69, 0x65, 0x6e, 0x64, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17,
+	0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x46, 0x72, 0x69, 0x65, 0x6e,
+	0x64, 0x73, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x14, 0x12,
+	0x12, 0x2f, 0x6d, 0x73, 0x67, 0x73, 0x79, 0x73, 0x2f, 0x76, 0x31, 0x2f, 0x66, 0x72, 0x69, 0x65,
+	0x6e, 0x64, 0x73, 0x12, 0x6a, 0x0a, 0x0b, 0x43, 0x68, 0x61, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f,
+	0x72, 0x79, 0x12, 0x1d, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x43,
+	0x68, 0x61, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1b, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x68,
+	0x61, 0x74, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1f,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x12, 0x17, 0x2f, 0x6d, 0x73, 0x67, 0x73, 0x79, 0x73, 0x2f,
+	0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x5f, 0x68, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x12,
+	0x69, 0x0a, 0x0b, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1d,
+	0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e,
+	0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22, 0x1e, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x18, 0x22, 0x13, 0x2f, 0x6d, 0x73, 0x67, 0x73, 0x79, 0x73, 0x2f, 0x76, 0x31, 0x2f, 0x73,
+	0x65, 0x6e, 0x64, 0x5f, 0x6d, 0x73, 0x67, 0x3a, 0x01, 0x2a, 0x12, 0x64, 0x0a, 0x09, 0x53, 0x75,
+	0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x12, 0x1b, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e,
+	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2e, 0x76, 0x31,
+	0x2e, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x22,
+	0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x22, 0x14, 0x2f, 0x6d, 0x73, 0x67, 0x73, 0x79, 0x73,
+	0x2f, 0x76, 0x31, 0x2f, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x3a, 0x01, 0x2a,
+	0x42, 0x23, 0x5a, 0x21, 0x66, 0x78, 0x6b, 0x74, 0x2e, 0x74, 0x65, 0x63, 0x68, 0x2f, 0x72, 0x61,
+	0x69, 0x64, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x61, 0x69, 0x64, 0x65, 0x6e, 0x2f,
+	0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -165,19 +687,40 @@ func file_api_raiden_v1_raiden_proto_rawDescGZIP() []byte {
 	return file_api_raiden_v1_raiden_proto_rawDescData
 }
 
-var file_api_raiden_v1_raiden_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_raiden_v1_raiden_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_raiden_v1_raiden_proto_goTypes = []interface{}{
-	(*SendMessageRequest)(nil), // 0: raiden.v1.SendMessageRequest
-	(*SendMessageReply)(nil),   // 1: raiden.v1.SendMessageReply
+	(*User)(nil),               // 0: raiden.v1.User
+	(*Message)(nil),            // 1: raiden.v1.Message
+	(*Content)(nil),            // 2: raiden.v1.Content
+	(*FriendsRequest)(nil),     // 3: raiden.v1.FriendsRequest
+	(*FriendsReply)(nil),       // 4: raiden.v1.FriendsReply
+	(*ChatHistoryRequest)(nil), // 5: raiden.v1.ChatHistoryRequest
+	(*ChatHistoryReply)(nil),   // 6: raiden.v1.ChatHistoryReply
+	(*SendMessageRequest)(nil), // 7: raiden.v1.SendMessageRequest
+	(*SendMessageReply)(nil),   // 8: raiden.v1.SendMessageReply
+	(*SubscribeRequest)(nil),   // 9: raiden.v1.SubscribeRequest
+	(*SubscribeReply)(nil),     // 10: raiden.v1.SubscribeReply
 }
 var file_api_raiden_v1_raiden_proto_depIdxs = []int32{
-	0, // 0: raiden.v1.MessageSystem.SendMessage:input_type -> raiden.v1.SendMessageRequest
-	1, // 1: raiden.v1.MessageSystem.SendMessage:output_type -> raiden.v1.SendMessageReply
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: raiden.v1.Message.sender:type_name -> raiden.v1.User
+	0,  // 1: raiden.v1.Message.recver:type_name -> raiden.v1.User
+	2,  // 2: raiden.v1.Message.content:type_name -> raiden.v1.Content
+	0,  // 3: raiden.v1.FriendsReply.friends:type_name -> raiden.v1.User
+	1,  // 4: raiden.v1.ChatHistoryReply.msgs:type_name -> raiden.v1.Message
+	2,  // 5: raiden.v1.SendMessageRequest.content:type_name -> raiden.v1.Content
+	3,  // 6: raiden.v1.MessageSystem.Friends:input_type -> raiden.v1.FriendsRequest
+	5,  // 7: raiden.v1.MessageSystem.ChatHistory:input_type -> raiden.v1.ChatHistoryRequest
+	7,  // 8: raiden.v1.MessageSystem.SendMessage:input_type -> raiden.v1.SendMessageRequest
+	9,  // 9: raiden.v1.MessageSystem.Subscribe:input_type -> raiden.v1.SubscribeRequest
+	4,  // 10: raiden.v1.MessageSystem.Friends:output_type -> raiden.v1.FriendsReply
+	6,  // 11: raiden.v1.MessageSystem.ChatHistory:output_type -> raiden.v1.ChatHistoryReply
+	8,  // 12: raiden.v1.MessageSystem.SendMessage:output_type -> raiden.v1.SendMessageReply
+	10, // 13: raiden.v1.MessageSystem.Subscribe:output_type -> raiden.v1.SubscribeReply
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_api_raiden_v1_raiden_proto_init() }
@@ -187,7 +730,7 @@ func file_api_raiden_v1_raiden_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_api_raiden_v1_raiden_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendMessageRequest); i {
+			switch v := v.(*User); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -199,7 +742,115 @@ func file_api_raiden_v1_raiden_proto_init() {
 			}
 		}
 		file_api_raiden_v1_raiden_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Message); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Content); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FriendsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FriendsReply); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ChatHistoryRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ChatHistoryReply); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SendMessageRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SendMessageReply); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SubscribeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_raiden_v1_raiden_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SubscribeReply); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -217,7 +868,7 @@ func file_api_raiden_v1_raiden_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_raiden_v1_raiden_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

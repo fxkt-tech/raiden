@@ -32,8 +32,10 @@ var ctx, service, close = func() (context.Context, v1.MessageSystemHTTPClient, f
 func TestSendMessage(t *testing.T) {
 	req := &v1.SendMessageRequest{
 		SenderUid: 1,
-		Msg:       "xx",
-		RecvUid:   2,
+		Content: &v1.Content{
+			Text: "xx",
+		},
+		RecverUid: 2,
 	}
 	rsp, err := service.SendMessage(ctx, req)
 	if err != nil {

@@ -7,21 +7,70 @@ import "google/api/annotations.proto";
 option go_package = "fxkt.tech/raiden/api/raiden/v1;v1";
 
 service MessageSystem {
+  rpc Friends (FriendsRequest) returns (FriendsReply) {
+    option (google.api.http) = {
+      get: "/msgsys/v1/friends",
+    };
+  }
+  rpc ChatHistory (ChatHistoryRequest) returns (ChatHistoryReply) {
+    option (google.api.http) = {
+      get: "/msgsys/v1/chat_history",
+    };
+  }
   rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {
     option (google.api.http) = {
-      post: "/raiden/v1/send_msg",
+      post: "/msgsys/v1/send_msg",
+      body: "*",
+    };
+  }
+  rpc Subscribe (SubscribeRequest) returns (SubscribeReply) {
+    option (google.api.http) = {
+      post: "/msgsys/v1/subscribe",
       body: "*",
     };
   }
 }
 
-message SendMessageRequest {
-  // 发送方用户id
-  int64 sender_uid = 1;
-  // 消息体
-  string msg = 2;
-  // 接收方用户id
-  int64 recv_uid = 3;
+message User {
+  uint32 uid = 1;
+  string nick = 2;
 }
 
+message Message {
+  User sender = 1;
+  User recver = 2;
+  Content content = 3; 
+}
+
+message Content {
+  string text = 1;
+}
+
+message FriendsRequest {
+  uint32 uid = 1;
+  uint32 page = 2;
+  uint32 count = 3;
+}
+message FriendsReply {
+  repeated User friends = 1;
+}
+
+message ChatHistoryRequest {
+  uint32 my_uid = 1;
+  uint32 friend_uid = 2;
+  uint32 page = 3;
+  uint32 count = 4;
+}
+message ChatHistoryReply {
+  repeated Message msgs = 1;
+}
+
+message SendMessageRequest {
+  uint32 sender_uid = 1;
+  Content content = 2;
+  uint32 recver_uid = 3;
+}
 message SendMessageReply {}
+
+message SubscribeRequest {}
+message SubscribeReply {}

@@ -56,6 +56,11 @@ generate:
 wire:
 	cd cmd/raiden && wire
 
+.PHONY: gorm
+# gorm
+gorm:
+	cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8" -tables "user"
+
 .PHONY: all
 # generate all
 all:

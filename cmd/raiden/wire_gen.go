@@ -23,7 +23,7 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	messageSystemRepo := data.NewGreeterRepo(dataData, logger)
+	messageSystemRepo := data.NewMessageSystemRepo(dataData, logger)
 	messageSystemUsecase := biz.NewMessageSystemUsecase(messageSystemRepo, logger)
 	messageSystemService := service.NewMessageSystemService(messageSystemUsecase, logger)
 	httpServer := server.NewHTTPServer(confServer, messageSystemService, logger)

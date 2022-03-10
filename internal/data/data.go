@@ -2,22 +2,32 @@ package data
 
 import (
 	"fxkt.tech/raiden/internal/conf"
+	"fxkt.tech/raiden/internal/data/db/query"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	gormlogger "gorm.io/gorm/logger"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo)
+var ProviderSet = wire.NewSet(NewData, NewMessageSystemRepo)
 
-// Data .
 type Data struct {
-	// TODO wrapped database client
+	db *query.Query
 }
 
-// NewData .
 func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
-	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
+	dbclient, err := gorm.Open(mysql.Open(c.Database.Source), &gorm.Config{
+		Logger: gormlogger.Default.LogMode(gormlogger.Info),
+	})
+	if err != nil {
+		return nil, nil, err
 	}
-	return &Data{}, cleanup, nil
+
+	return &Data{
+			db: query.Use(dbclient),
+		}, func() {
+			log.NewHelper(logger).Info("closing the data resources")
+		}, nil
 }
