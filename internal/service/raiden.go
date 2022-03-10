@@ -30,3 +30,29 @@ func (s *MessageSystemService) SendMessage(ctx context.Context, in *v1.SendMessa
 
 	return &v1.SendMessageReply{}, nil
 }
+
+func (s *MessageSystemService) ChatHistory(ctx context.Context, in *v1.ChatHistoryRequest) (*v1.ChatHistoryReply, error) {
+	s.log.WithContext(ctx).Infof("SendMessage Received: %s", in.String())
+
+	ms := &biz.MessageSearch{
+		MyUid:     in.MyUid,
+		FriendUid: in.FriendUid,
+		Page:      in.Page,
+		Count:     in.Count,
+	}
+	messages, err := s.uc.ChatHistory(ctx, ms)
+	if err != nil {
+		return nil, err
+	}
+
+	replymsgs := make([]*v1.Message, len(messages))
+	for i, message := range messages {
+		replymsgs[i] = &v1.Message{
+			Content: &v1.Content{
+				Text: message.Body,
+			},
+		}
+	}
+
+	return &v1.ChatHistoryReply{Msgs: replymsgs}, nil
+}

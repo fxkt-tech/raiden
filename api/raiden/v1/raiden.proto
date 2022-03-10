@@ -48,8 +48,8 @@ message Content {
 
 message FriendsRequest {
   uint32 uid = 1;
-  uint32 page = 2;
-  uint32 count = 3;
+  int32 page = 2;
+  int32 count = 3;
 }
 message FriendsReply {
   repeated User friends = 1;
@@ -58,8 +58,8 @@ message FriendsReply {
 message ChatHistoryRequest {
   uint32 my_uid = 1;
   uint32 friend_uid = 2;
-  uint32 page = 3;
-  uint32 count = 4;
+  int32 page = 3;
+  int32 count = 4;
 }
 message ChatHistoryReply {
   repeated Message msgs = 1;

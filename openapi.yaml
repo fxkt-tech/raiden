@@ -26,12 +26,12 @@ paths:
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
                 - name: count
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
             responses:
                 "200":
                     description: OK
@@ -54,12 +54,12 @@ paths:
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
                 - name: count
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
             responses:
                 "200":
                     description: OK
