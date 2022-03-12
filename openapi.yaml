@@ -6,7 +6,7 @@ info:
     title: MessageSystem API
     version: 0.0.1
 paths:
-    /msgsys/v1/chat_history:
+    /v1/message/history:
         get:
             tags:
                 - MessageSystem
@@ -16,12 +16,12 @@ paths:
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
                 - name: friendUid
                   in: query
                   schema:
                     type: integer
-                    format: uint32
+                    format: int32
                 - name: page
                   in: query
                   schema:
@@ -39,35 +39,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ChatHistoryReply'
-    /msgsys/v1/friends:
-        get:
-            tags:
-                - MessageSystem
-            operationId: MessageSystem_Friends
-            parameters:
-                - name: uid
-                  in: query
-                  schema:
-                    type: integer
-                    format: uint32
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: count
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/FriendsReply'
-    /msgsys/v1/send_msg:
+    /v1/message/send:
         post:
             tags:
                 - MessageSystem
@@ -85,7 +57,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SendMessageReply'
-    /msgsys/v1/subscribe:
+    /v1/message/subscribe:
         post:
             tags:
                 - MessageSystem
@@ -103,6 +75,52 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/SubscribeReply'
+    /v1/user/friends:
+        get:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_Friends
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: count
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FriendsReply'
+    /v1/user/register:
+        post:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_RegisterUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RegisterUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RegisterUserReply'
 components:
     schemas:
         ChatHistoryReply:
@@ -133,6 +151,19 @@ components:
                     $ref: '#/components/schemas/User'
                 content:
                     $ref: '#/components/schemas/Content'
+                ctime:
+                    type: string
+                    format: RFC3339
+        RegisterUserReply:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/User'
+        RegisterUserRequest:
+            type: object
+            properties:
+                nick:
+                    type: string
         SendMessageReply:
             type: object
             properties: {}
@@ -141,12 +172,12 @@ components:
             properties:
                 senderUid:
                     type: integer
-                    format: uint32
+                    format: int32
                 content:
                     $ref: '#/components/schemas/Content'
                 recverUid:
                     type: integer
-                    format: uint32
+                    format: int32
         SubscribeReply:
             type: object
             properties: {}
@@ -158,7 +189,7 @@ components:
             properties:
                 uid:
                     type: integer
-                    format: uint32
+                    format: int32
                 nick:
                     type: string
 tags:

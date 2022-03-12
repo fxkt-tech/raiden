@@ -7,33 +7,43 @@ import (
 )
 
 type Message struct {
-	SendUid uint32
-	Body    string
-	RecvUid uint32
+	SendUid int32
+	Content *Content
+	RecvUid int32
+}
+
+type Content struct {
+	Text string
 }
 
 type MessageSearch struct {
-	MyUid     uint32
-	FriendUid uint32
+	MyUid     int32
+	FriendUid int32
 	Page      int32
 	Count     int32
 }
 
-type Friend struct {
-	Uid  uint32
+type User struct {
+	Uid  int32
 	Nick string
 }
 
-type FriendSearch struct {
-	Uid   uint32
+type UserSearch struct {
+	Uid   int32
 	Page  int32
 	Count int32
 }
 
 type MessageSystemRepo interface {
+	// user
+	//
+	RegisterUser(context.Context, *User) error
+	FriendList(context.Context, *UserSearch) ([]*User, error)
+
+	// message
+	//
 	SendMessage(context.Context, *Message) error
 	ChatHistory(context.Context, *MessageSearch) ([]*Message, error)
-	FriendList(context.Context, *FriendSearch) ([]*Friend, error)
 }
 
 type MessageSystemUsecase struct {
@@ -53,6 +63,10 @@ func (uc *MessageSystemUsecase) ChatHistory(ctx context.Context, ms *MessageSear
 	return uc.repo.ChatHistory(ctx, ms)
 }
 
-func (uc *MessageSystemUsecase) FriendList(ctx context.Context, fs *FriendSearch) ([]*Friend, error) {
+func (uc *MessageSystemUsecase) FriendList(ctx context.Context, fs *UserSearch) ([]*User, error) {
 	return uc.repo.FriendList(ctx, fs)
+}
+
+func (uc *MessageSystemUsecase) RegisterUser(ctx context.Context, f *User) error {
+	return uc.repo.RegisterUser(ctx, f)
 }

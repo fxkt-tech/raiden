@@ -22,7 +22,13 @@ func NewMessageSystemService(uc *biz.MessageSystemUsecase, logger log.Logger) *M
 func (s *MessageSystemService) SendMessage(ctx context.Context, in *v1.SendMessageRequest) (*v1.SendMessageReply, error) {
 	s.log.WithContext(ctx).Infof("SendMessage Received: %s", in.String())
 
-	msg := &biz.Message{}
+	msg := &biz.Message{
+		SendUid: in.SenderUid,
+		RecvUid: in.RecverUid,
+		Content: &biz.Content{
+			Text: in.Content.Text,
+		},
+	}
 	err := s.uc.SendMessage(ctx, msg)
 	if err != nil {
 		return nil, err
@@ -47,12 +53,60 @@ func (s *MessageSystemService) ChatHistory(ctx context.Context, in *v1.ChatHisto
 
 	replymsgs := make([]*v1.Message, len(messages))
 	for i, message := range messages {
+		var content *v1.Content
+		if message.Content != nil {
+			content = &v1.Content{
+				Text: message.Content.Text,
+			}
+		}
 		replymsgs[i] = &v1.Message{
-			Content: &v1.Content{
-				Text: message.Body,
+			Sender: &v1.User{
+				Uid: message.SendUid,
 			},
+			Recver: &v1.User{
+				Uid: message.RecvUid,
+			},
+			Content: content,
 		}
 	}
 
 	return &v1.ChatHistoryReply{Msgs: replymsgs}, nil
+}
+
+func (s *MessageSystemService) RegisterUser(ctx context.Context, in *v1.RegisterUserRequest) (*v1.RegisterUserReply, error) {
+	s.log.WithContext(ctx).Infof("SendMessage Received: %s", in.String())
+
+	user := &biz.User{
+		Nick: in.Nick,
+	}
+	err := s.uc.RegisterUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &v1.RegisterUserReply{User: &v1.User{Uid: user.Uid, Nick: user.Nick}}, nil
+}
+
+func (s *MessageSystemService) Friends(ctx context.Context, in *v1.FriendsRequest) (*v1.FriendsReply, error) {
+	s.log.WithContext(ctx).Infof("Friends Received: %s", in.String())
+
+	us := &biz.UserSearch{
+		Uid:   in.Uid,
+		Page:  in.Page,
+		Count: in.Count,
+	}
+	friends, err := s.uc.FriendList(ctx, us)
+	if err != nil {
+		return nil, err
+	}
+
+	replyfriends := make([]*v1.User, len(friends))
+	for i, friend := range friends {
+		replyfriends[i] = &v1.User{
+			Uid:  friend.Uid,
+			Nick: friend.Nick,
+		}
+	}
+
+	return &v1.FriendsReply{Friends: replyfriends}, nil
 }

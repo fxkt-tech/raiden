@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageSystemClient interface {
+	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserReply, error)
 	Friends(ctx context.Context, in *FriendsRequest, opts ...grpc.CallOption) (*FriendsReply, error)
 	ChatHistory(ctx context.Context, in *ChatHistoryRequest, opts ...grpc.CallOption) (*ChatHistoryReply, error)
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageReply, error)
@@ -34,6 +35,15 @@ type messageSystemClient struct {
 
 func NewMessageSystemClient(cc grpc.ClientConnInterface) MessageSystemClient {
 	return &messageSystemClient{cc}
+}
+
+func (c *messageSystemClient) RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserReply, error) {
+	out := new(RegisterUserReply)
+	err := c.cc.Invoke(ctx, "/raiden.v1.MessageSystem/RegisterUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *messageSystemClient) Friends(ctx context.Context, in *FriendsRequest, opts ...grpc.CallOption) (*FriendsReply, error) {
@@ -76,6 +86,7 @@ func (c *messageSystemClient) Subscribe(ctx context.Context, in *SubscribeReques
 // All implementations must embed UnimplementedMessageSystemServer
 // for forward compatibility
 type MessageSystemServer interface {
+	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserReply, error)
 	Friends(context.Context, *FriendsRequest) (*FriendsReply, error)
 	ChatHistory(context.Context, *ChatHistoryRequest) (*ChatHistoryReply, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageReply, error)
@@ -87,6 +98,9 @@ type MessageSystemServer interface {
 type UnimplementedMessageSystemServer struct {
 }
 
+func (UnimplementedMessageSystemServer) RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterUser not implemented")
+}
 func (UnimplementedMessageSystemServer) Friends(context.Context, *FriendsRequest) (*FriendsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Friends not implemented")
 }
@@ -110,6 +124,24 @@ type UnsafeMessageSystemServer interface {
 
 func RegisterMessageSystemServer(s grpc.ServiceRegistrar, srv MessageSystemServer) {
 	s.RegisterService(&MessageSystem_ServiceDesc, srv)
+}
+
+func _MessageSystem_RegisterUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageSystemServer).RegisterUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/raiden.v1.MessageSystem/RegisterUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageSystemServer).RegisterUser(ctx, req.(*RegisterUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _MessageSystem_Friends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -191,6 +223,10 @@ var MessageSystem_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "raiden.v1.MessageSystem",
 	HandlerType: (*MessageSystemServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RegisterUser",
+			Handler:    _MessageSystem_RegisterUser_Handler,
+		},
 		{
 			MethodName: "Friends",
 			Handler:    _MessageSystem_Friends_Handler,

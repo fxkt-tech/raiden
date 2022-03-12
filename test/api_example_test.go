@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"testing"
-	"time"
 
 	v1 "fxkt.tech/raiden/api/raiden/v1"
 	"fxkt.tech/raiden/pkg/json"
@@ -12,9 +11,8 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
-var ctx, service, close = func() (context.Context, v1.MessageSystemHTTPClient, func()) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	client, err := http.NewClient(ctx,
+var service, close = func() (v1.MessageSystemHTTPClient, func()) {
+	client, err := http.NewClient(context.Background(),
 		http.WithEndpoint("0.0.0.0:8000"),
 		http.WithMiddleware(
 			recovery.Recovery(),
@@ -23,8 +21,7 @@ var ctx, service, close = func() (context.Context, v1.MessageSystemHTTPClient, f
 	if err != nil {
 		panic(err)
 	}
-	return ctx, v1.NewMessageSystemHTTPClient(client), func() {
-		cancel()
+	return v1.NewMessageSystemHTTPClient(client), func() {
 		client.Close()
 	}
 }()
@@ -37,7 +34,48 @@ func TestSendMessage(t *testing.T) {
 		},
 		RecverUid: 2,
 	}
-	rsp, err := service.SendMessage(ctx, req)
+	rsp, err := service.SendMessage(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(json.Pretty(json.ToBytes(rsp)))
+	close()
+}
+
+func TestChatHistory(t *testing.T) {
+	req := &v1.ChatHistoryRequest{
+		MyUid:     1,
+		FriendUid: 2,
+		Page:      1,
+		Count:     10,
+	}
+	rsp, err := service.ChatHistory(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(json.Pretty(json.ToBytes(rsp)))
+	close()
+}
+
+func TestRegisterUser(t *testing.T) {
+	req := &v1.RegisterUserRequest{
+		Nick: "Mei",
+	}
+	rsp, err := service.RegisterUser(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(json.Pretty(json.ToBytes(rsp)))
+	close()
+}
+
+func TestFriends(t *testing.T) {
+	req := &v1.FriendsRequest{
+		Uid:   1,
+		Page:  1,
+		Count: 10,
+	}
+	rsp, err := service.Friends(context.Background(), req)
 	if err != nil {
 		t.Fatal(err)
 	}

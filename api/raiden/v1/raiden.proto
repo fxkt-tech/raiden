@@ -3,51 +3,71 @@ syntax = "proto3";
 package raiden.v1;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "fxkt.tech/raiden/api/raiden/v1;v1";
 
 service MessageSystem {
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserReply) {
+    option (google.api.http) = {
+      post: "/v1/user/register",
+      body: "*",
+      // response_body: "user",
+    };
+  }
   rpc Friends (FriendsRequest) returns (FriendsReply) {
     option (google.api.http) = {
-      get: "/msgsys/v1/friends",
+      get: "/v1/user/friends",
     };
   }
   rpc ChatHistory (ChatHistoryRequest) returns (ChatHistoryReply) {
     option (google.api.http) = {
-      get: "/msgsys/v1/chat_history",
+      get: "/v1/message/history",
     };
   }
   rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {
     option (google.api.http) = {
-      post: "/msgsys/v1/send_msg",
+      post: "/v1/message/send",
       body: "*",
     };
   }
   rpc Subscribe (SubscribeRequest) returns (SubscribeReply) {
     option (google.api.http) = {
-      post: "/msgsys/v1/subscribe",
+      post: "/v1/message/subscribe",
       body: "*",
     };
   }
 }
 
+// model
+
 message User {
-  uint32 uid = 1;
+  int32 uid = 1;
   string nick = 2;
 }
 
 message Message {
   User sender = 1;
   User recver = 2;
-  Content content = 3; 
+  Content content = 3;
+  google.protobuf.Timestamp ctime = 4;
 }
 
 message Content {
   string text = 1;
 }
 
+// request-reply
+
+message RegisterUserRequest {
+  string nick = 1;
+}
+message RegisterUserReply {
+  User user = 1;
+}
+
 message FriendsRequest {
-  uint32 uid = 1;
+  int32 uid = 1;
   int32 page = 2;
   int32 count = 3;
 }
@@ -56,8 +76,8 @@ message FriendsReply {
 }
 
 message ChatHistoryRequest {
-  uint32 my_uid = 1;
-  uint32 friend_uid = 2;
+  int32 my_uid = 1;
+  int32 friend_uid = 2;
   int32 page = 3;
   int32 count = 4;
 }
@@ -66,9 +86,9 @@ message ChatHistoryReply {
 }
 
 message SendMessageRequest {
-  uint32 sender_uid = 1;
+  int32 sender_uid = 1;
   Content content = 2;
-  uint32 recver_uid = 3;
+  int32 recver_uid = 3;
 }
 message SendMessageReply {}
 
