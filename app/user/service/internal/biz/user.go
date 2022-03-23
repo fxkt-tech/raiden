@@ -30,27 +30,27 @@ type UserSystemRepo interface {
 	Relation(context.Context, *UserRelation) error
 }
 
-type MessageSystemUsecase struct {
+type UserSystemUsecase struct {
 	repo UserSystemRepo
 	log  *log.Helper
 }
 
-func NewMessageSystemUsecase(repo UserSystemRepo, logger log.Logger) *MessageSystemUsecase {
-	return &MessageSystemUsecase{repo: repo, log: log.NewHelper(logger)}
+func NewUserSystemUsecase(repo UserSystemRepo, logger log.Logger) *UserSystemUsecase {
+	return &UserSystemUsecase{repo: repo, log: log.NewHelper(logger)}
 }
 
-func (uc *MessageSystemUsecase) Register(ctx context.Context, u *User) error {
+func (uc *UserSystemUsecase) Register(ctx context.Context, u *User) error {
 	return uc.repo.Register(ctx, u)
 }
 
-func (uc *MessageSystemUsecase) Followers(ctx context.Context, us *UserSearch) ([]*User, error) {
+func (uc *UserSystemUsecase) Followers(ctx context.Context, us *UserSearch) ([]*User, error) {
 	return uc.repo.Followers(ctx, us)
 }
 
-func (uc *MessageSystemUsecase) Following(ctx context.Context, us *UserSearch) ([]*User, error) {
+func (uc *UserSystemUsecase) Following(ctx context.Context, us *UserSearch) ([]*User, error) {
 	return uc.repo.Following(ctx, us)
 }
 
-func (uc *MessageSystemUsecase) Relation(ctx context.Context, ur *UserRelation) error {
+func (uc *UserSystemUsecase) Relation(ctx context.Context, ur *UserRelation) error {
 	return uc.repo.Relation(ctx, ur)
 }

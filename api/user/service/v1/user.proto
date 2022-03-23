@@ -9,23 +9,23 @@ option go_package = "fxkt.tech/raiden/api/user/service/v1;v1";
 service UserSystem {
   rpc Register (RegisterRequest) returns (RegisterReply) {
     option (google.api.http) = {
-      post: "/api/v1/user/register",
+      post: "/api/user/v1/register",
       body: "*",
     };
   }
   rpc Followers (FollowersRequest) returns (FollowersReply) {
     option (google.api.http) = {
-      get: "/api/v1/user/followers",
+      get: "/api/user/v1/followers",
     };
   }
   rpc Following (FollowingRequest) returns (FollowingReply) {
     option (google.api.http) = {
-      get: "/api/v1/user/following",
+      get: "/api/user/v1/following",
     };
   }
   rpc Relation (RelationRequest) returns (RelationReply) {
     option (google.api.http) = {
-      post: "/api/v1/user/relation",
+      post: "/api/user/v1/relation",
       body: "*",
     };
   }

@@ -1,9 +1,10 @@
 package server
 
 import (
-	v1 "fxkt.tech/raiden/api/raiden/v1"
-	"fxkt.tech/raiden/internal/conf"
-	"fxkt.tech/raiden/internal/service"
+	v1 "fxkt.tech/raiden/api/message/service/v1"
+	"fxkt.tech/raiden/app/message/service/internal/conf"
+	"fxkt.tech/raiden/app/message/service/internal/service"
+	"fxkt.tech/raiden/pkg/server"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
@@ -26,7 +27,7 @@ func NewHTTPServer(c *conf.Server, impl *service.MessageSystemService, logger lo
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	RegisterPprof(srv)
+	server.RegisterPprof(srv)
 	v1.RegisterMessageSystemHTTPServer(srv, impl)
 	return srv
 }

@@ -1,8 +1,8 @@
 package data
 
 import (
-	"fxkt.tech/raiden/internal/conf"
-	"fxkt.tech/raiden/internal/data/db/query"
+	"fxkt.tech/raiden/app/user/service/internal/conf"
+	"fxkt.tech/raiden/app/user/service/internal/data/db/query"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
@@ -11,7 +11,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewMessageSystemRepo)
+var ProviderSet = wire.NewSet(NewData, NewUserSystemRepo)
 
 type Data struct {
 	db *query.Query

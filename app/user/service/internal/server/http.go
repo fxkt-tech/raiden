@@ -1,9 +1,9 @@
 package server
 
 import (
-	v1 "fxkt.tech/raiden/api/raiden/v1"
-	"fxkt.tech/raiden/internal/conf"
-	"fxkt.tech/raiden/internal/service"
+	v1 "fxkt.tech/raiden/api/user/service/v1"
+	"fxkt.tech/raiden/app/user/service/internal/conf"
+	"fxkt.tech/raiden/app/user/service/internal/service"
 	"fxkt.tech/raiden/pkg/server"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -11,7 +11,7 @@ import (
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, impl *service.MessageSystemService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, impl *service.UserSystemService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -28,6 +28,6 @@ func NewHTTPServer(c *conf.Server, impl *service.MessageSystemService, logger lo
 	}
 	srv := http.NewServer(opts...)
 	server.RegisterPprof(srv)
-	v1.RegisterMessageSystemHTTPServer(srv, impl)
+	v1.RegisterUserSystemHTTPServer(srv, impl)
 	return srv
 }

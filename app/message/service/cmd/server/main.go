@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"fxkt.tech/raiden/internal/conf"
+	"fxkt.tech/raiden/app/message/service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

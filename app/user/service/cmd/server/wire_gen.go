@@ -6,11 +6,11 @@
 package main
 
 import (
-	"fxkt.tech/raiden/internal/biz"
-	"fxkt.tech/raiden/internal/conf"
-	"fxkt.tech/raiden/internal/data"
-	"fxkt.tech/raiden/internal/server"
-	"fxkt.tech/raiden/internal/service"
+	"fxkt.tech/raiden/app/user/service/internal/biz"
+	"fxkt.tech/raiden/app/user/service/internal/conf"
+	"fxkt.tech/raiden/app/user/service/internal/data"
+	"fxkt.tech/raiden/app/user/service/internal/server"
+	"fxkt.tech/raiden/app/user/service/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -23,11 +23,11 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	messageSystemRepo := data.NewMessageSystemRepo(dataData, logger)
-	messageSystemUsecase := biz.NewMessageSystemUsecase(messageSystemRepo, logger)
-	messageSystemService := service.NewMessageSystemService(messageSystemUsecase, logger)
-	httpServer := server.NewHTTPServer(confServer, messageSystemService, logger)
-	grpcServer := server.NewGRPCServer(confServer, messageSystemService, logger)
+	userSystemRepo := data.NewUserSystemRepo(dataData, logger)
+	userSystemUsecase := biz.NewUserSystemUsecase(userSystemRepo, logger)
+	userSystemService := service.NewUserSystemService(userSystemUsecase, logger)
+	httpServer := server.NewHTTPServer(confServer, userSystemService, logger)
+	grpcServer := server.NewGRPCServer(confServer, userSystemService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
 		cleanup()

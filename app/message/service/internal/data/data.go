@@ -1,8 +1,8 @@
 package data
 
 import (
-	"fxkt.tech/raiden/internal/conf"
-	"fxkt.tech/raiden/internal/data/db/query"
+	"fxkt.tech/raiden/app/message/service/internal/conf"
+	"fxkt.tech/raiden/app/message/service/internal/data/db/query"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"

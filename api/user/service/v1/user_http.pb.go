@@ -26,10 +26,10 @@ type UserSystemHTTPServer interface {
 
 func RegisterUserSystemHTTPServer(s *http.Server, srv UserSystemHTTPServer) {
 	r := s.Route("/")
-	r.POST("/api/v1/user/register", _UserSystem_Register0_HTTP_Handler(srv))
-	r.GET("/api/v1/user/followers", _UserSystem_Followers0_HTTP_Handler(srv))
-	r.GET("/api/v1/user/following", _UserSystem_Following0_HTTP_Handler(srv))
-	r.POST("/api/v1/user/relation", _UserSystem_Relation0_HTTP_Handler(srv))
+	r.POST("/api/user/v1/register", _UserSystem_Register0_HTTP_Handler(srv))
+	r.GET("/api/user/v1/followers", _UserSystem_Followers0_HTTP_Handler(srv))
+	r.GET("/api/user/v1/following", _UserSystem_Following0_HTTP_Handler(srv))
+	r.POST("/api/user/v1/relation", _UserSystem_Relation0_HTTP_Handler(srv))
 }
 
 func _UserSystem_Register0_HTTP_Handler(srv UserSystemHTTPServer) func(ctx http.Context) error {
@@ -125,7 +125,7 @@ func NewUserSystemHTTPClient(client *http.Client) UserSystemHTTPClient {
 
 func (c *UserSystemHTTPClientImpl) Followers(ctx context.Context, in *FollowersRequest, opts ...http.CallOption) (*FollowersReply, error) {
 	var out FollowersReply
-	pattern := "/api/v1/user/followers"
+	pattern := "/api/user/v1/followers"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.UserSystem/Followers"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -138,7 +138,7 @@ func (c *UserSystemHTTPClientImpl) Followers(ctx context.Context, in *FollowersR
 
 func (c *UserSystemHTTPClientImpl) Following(ctx context.Context, in *FollowingRequest, opts ...http.CallOption) (*FollowingReply, error) {
 	var out FollowingReply
-	pattern := "/api/v1/user/following"
+	pattern := "/api/user/v1/following"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.UserSystem/Following"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -151,7 +151,7 @@ func (c *UserSystemHTTPClientImpl) Following(ctx context.Context, in *FollowingR
 
 func (c *UserSystemHTTPClientImpl) Register(ctx context.Context, in *RegisterRequest, opts ...http.CallOption) (*RegisterReply, error) {
 	var out RegisterReply
-	pattern := "/api/v1/user/register"
+	pattern := "/api/user/v1/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/user.v1.UserSystem/Register"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -164,7 +164,7 @@ func (c *UserSystemHTTPClientImpl) Register(ctx context.Context, in *RegisterReq
 
 func (c *UserSystemHTTPClientImpl) Relation(ctx context.Context, in *RelationRequest, opts ...http.CallOption) (*RelationReply, error) {
 	var out RelationReply
-	pattern := "/api/v1/user/relation"
+	pattern := "/api/user/v1/relation"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/user.v1.UserSystem/Relation"))
 	opts = append(opts, http.PathTemplate(pattern))

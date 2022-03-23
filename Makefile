@@ -18,11 +18,13 @@ init:
 .PHONY: errors
 # generate errors code
 errors:
-	cd ../../../api/$(APP_RELATIVE_PATH) &&  protoc --proto_path=. \
-													--proto_path=../../../third_party \
-													--go_out=paths=source_relative:. \
-													--go-errors_out=paths=source_relative:. \
-													$(API_PROTO_FILES)
+	cd ../../../api/$(APP_RELATIVE_PATH) && \
+	protoc --proto_path=. \
+		--proto_path=../../../ \
+		--proto_path=../../../third_party \
+		--go_out=paths=source_relative:. \
+		--go-errors_out=paths=source_relative:. \
+		$(API_PROTO_FILES)
 
 .PHONY: config
 # generate internal proto
@@ -35,13 +37,15 @@ config:
 .PHONY: api
 # generate api proto
 api:
-	cd ../../../api/$(APP_RELATIVE_PATH) &&  protoc --proto_path=. \
-													--proto_path=../../../third_party \
-													--go_out=paths=source_relative:. \
-													--go-http_out=paths=source_relative:. \
-													--go-grpc_out=paths=source_relative:. \
-													--openapi_out==paths=source_relative:. \
-													$(API_PROTO_FILES)
+	cd ../../../api/$(APP_RELATIVE_PATH) && \
+	protoc --proto_path=. \
+		--proto_path=../../../ \
+		--proto_path=../../../third_party \
+		--go_out=paths=source_relative:. \
+		--go-http_out=paths=source_relative:. \
+		--go-grpc_out=paths=source_relative:. \
+		--openapi_out==paths=source_relative:. \
+		$(API_PROTO_FILES)
 
 .PHONY: build
 # build
@@ -76,7 +80,7 @@ wire:
 .PHONY: gorm
 # gorm
 gorm:
-	cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8" -tables "user,role,order"
+	mkdir -p internal/data/db/query && cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8" -tables "user"
 
 .PHONY: all
 # generate all

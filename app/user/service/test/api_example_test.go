@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"testing"
 
-	v1 "fxkt.tech/raiden/api/raiden/v1"
+	v1 "fxkt.tech/raiden/api/user/service/v1"
 	"fxkt.tech/raiden/pkg/json"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
 )
 
-var service, close = func() (v1.MessageSystemHTTPClient, func()) {
+var service, close = func() (v1.UserSystemHTTPClient, func()) {
 	client, err := http.NewClient(context.Background(),
 		http.WithEndpoint("0.0.0.0:8000"),
 		http.WithMiddleware(
@@ -21,20 +21,16 @@ var service, close = func() (v1.MessageSystemHTTPClient, func()) {
 	if err != nil {
 		panic(err)
 	}
-	return v1.NewMessageSystemHTTPClient(client), func() {
+	return v1.NewUserSystemHTTPClient(client), func() {
 		client.Close()
 	}
 }()
 
-func TestSendMessage(t *testing.T) {
-	req := &v1.SendMessageRequest{
-		SenderUid: 1,
-		Content: &v1.Content{
-			Text: "xx",
-		},
-		RecverUid: 2,
+func TestRegister(t *testing.T) {
+	req := &v1.RegisterRequest{
+		Nick: "Justyer",
 	}
-	rsp, err := service.SendMessage(context.Background(), req)
+	rsp, err := service.Register(context.Background(), req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,43 +38,42 @@ func TestSendMessage(t *testing.T) {
 	close()
 }
 
-func TestChatHistory(t *testing.T) {
-	req := &v1.ChatHistoryRequest{
-		MyUid:     1,
-		FriendUid: 2,
-		Page:      1,
-		Count:     10,
+func TestFollowers(t *testing.T) {
+	req := &v1.FollowersRequest{
+		Uid:   1,
+		Page:  1,
+		Count: 10,
 	}
-	rsp, err := service.ChatHistory(context.Background(), req)
+	rsp, err := service.Followers(context.Background(), req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	fmt.Println(json.Pretty(json.ToBytes(rsp)))
 	close()
 }
-
-// func TestRegisterUser(t *testing.T) {
-// 	req := &v1.RegisterUserRequest{
-// 		Nick: "Mei",
-// 	}
-// 	rsp, err := service.RegisterUser(context.Background(), req)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	fmt.Println(json.Pretty(json.ToBytes(rsp)))
-// 	close()
-// }
-
-// func TestFriends(t *testing.T) {
-// 	req := &v1.FriendsRequest{
-// 		Uid:   1,
-// 		Page:  1,
-// 		Count: 10,
-// 	}
-// 	rsp, err := service.Friends(context.Background(), req)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	fmt.Println(json.Pretty(json.ToBytes(rsp)))
-// 	close()
-// }
+func TestFollowing(t *testing.T) {
+	req := &v1.FollowingRequest{
+		Uid:   1,
+		Page:  1,
+		Count: 10,
+	}
+	rsp, err := service.Following(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(json.Pretty(json.ToBytes(rsp)))
+	close()
+}
+func TestRelation(t *testing.T) {
+	req := &v1.RelationRequest{
+		ActiveUid:  1,
+		PassiveUid: 2,
+		Action:     1,
+	}
+	rsp, err := service.Relation(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(json.Pretty(json.ToBytes(rsp)))
+	close()
+}

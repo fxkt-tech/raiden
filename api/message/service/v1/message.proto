@@ -1,22 +1,20 @@
 syntax = "proto3";
 
-package raiden.v1;
+package message.v1;
 
 import "google/api/annotations.proto";
 
-import "api/raiden/v1/user.proto";
-
-option go_package = "fxkt.tech/raiden/api/raiden/v1;v1";
+option go_package = "fxkt.tech/raiden/api/message/service/v1;v1";
 
 service MessageSystem {
   rpc ChatHistory (ChatHistoryRequest) returns (ChatHistoryReply) {
     option (google.api.http) = {
-      get: "/v1/message/history",
+      get: "/api/message/v1/history",
     };
   }
   rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {
     option (google.api.http) = {
-      post: "/v1/message/send",
+      post: "/api/message/v1/send",
       body: "*",
     };
   }
@@ -25,8 +23,8 @@ service MessageSystem {
 // model
 
 message Message {
-  User sender = 1;
-  User recver = 2;
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
   Content content = 3;
   int64 ctime = 4;
 }
@@ -37,25 +35,9 @@ message Content {
 
 // request-reply
 
-message RegisterUserRequest {
-  string nick = 1;
-}
-message RegisterUserReply {
-  User user = 1;
-}
-
-message FriendsRequest {
-  int32 uid = 1;
-  int32 page = 2;
-  int32 count = 3;
-}
-message FriendsReply {
-  repeated User friends = 1;
-}
-
 message ChatHistoryRequest {
-  int32 my_uid = 1;
-  int32 friend_uid = 2;
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
   int32 page = 3;
   int32 count = 4;
 }
@@ -65,7 +47,7 @@ message ChatHistoryReply {
 
 message SendMessageRequest {
   int32 sender_uid = 1;
-  Content content = 2;
-  int32 recver_uid = 3;
+  int32 recver_uid = 2;
+  Content content = 3;
 }
 message SendMessageReply {}

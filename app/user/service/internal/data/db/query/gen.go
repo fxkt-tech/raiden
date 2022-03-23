@@ -13,38 +13,33 @@ import (
 
 func Use(db *gorm.DB) *Query {
 	return &Query{
-		db:      db,
-		Message: newMessage(db),
-		User:    newUser(db),
+		db:   db,
+		User: newUser(db),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Message message
-	User    user
+	User user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:      db,
-		Message: q.Message.clone(db),
-		User:    q.User.clone(db),
+		db:   db,
+		User: q.User.clone(db),
 	}
 }
 
 type queryCtx struct {
-	Message messageDo
-	User    userDo
+	User userDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Message: *q.Message.WithContext(ctx),
-		User:    *q.User.WithContext(ctx),
+		User: *q.User.WithContext(ctx),
 	}
 }
 

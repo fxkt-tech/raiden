@@ -6,7 +6,7 @@ info:
     title: UserSystem API
     version: 0.0.1
 paths:
-    /api/v1/user/followers:
+    /api/user/v1/followers:
         get:
             tags:
                 - UserSystem
@@ -34,7 +34,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/FollowersReply'
-    /api/v1/user/following:
+    /api/user/v1/following:
         get:
             tags:
                 - UserSystem
@@ -62,7 +62,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/FollowingReply'
-    /api/v1/user/register:
+    /api/user/v1/register:
         post:
             tags:
                 - UserSystem
@@ -80,7 +80,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RegisterReply'
-    /api/v1/user/relation:
+    /api/user/v1/relation:
         post:
             tags:
                 - UserSystem

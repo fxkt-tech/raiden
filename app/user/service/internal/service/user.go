@@ -8,18 +8,18 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type MessageSystemService struct {
+type UserSystemService struct {
 	v1.UnimplementedUserSystemServer
 
-	uc  *biz.MessageSystemUsecase
+	uc  *biz.UserSystemUsecase
 	log *log.Helper
 }
 
-func NewMessageSystemService(uc *biz.MessageSystemUsecase, logger log.Logger) *MessageSystemService {
-	return &MessageSystemService{uc: uc, log: log.NewHelper(logger)}
+func NewUserSystemService(uc *biz.UserSystemUsecase, logger log.Logger) *UserSystemService {
+	return &UserSystemService{uc: uc, log: log.NewHelper(logger)}
 }
 
-func (s *MessageSystemService) Register(ctx context.Context, in *v1.RegisterRequest) (*v1.RegisterReply, error) {
+func (s *UserSystemService) Register(ctx context.Context, in *v1.RegisterRequest) (*v1.RegisterReply, error) {
 	s.log.WithContext(ctx).Infof("SendMessage.Request: %s", in.String())
 
 	msg := &biz.User{
@@ -33,7 +33,7 @@ func (s *MessageSystemService) Register(ctx context.Context, in *v1.RegisterRequ
 	return &v1.RegisterReply{}, nil
 }
 
-func (s *MessageSystemService) Followers(ctx context.Context, in *v1.FollowersRequest) (*v1.FollowersReply, error) {
+func (s *UserSystemService) Followers(ctx context.Context, in *v1.FollowersRequest) (*v1.FollowersReply, error) {
 	s.log.WithContext(ctx).Infof("Followers.Request: %s", in.String())
 
 	ms := &biz.UserSearch{
@@ -57,7 +57,7 @@ func (s *MessageSystemService) Followers(ctx context.Context, in *v1.FollowersRe
 	return &v1.FollowersReply{Users: replyUsers}, nil
 }
 
-func (s *MessageSystemService) Following(ctx context.Context, in *v1.FollowingRequest) (*v1.FollowingReply, error) {
+func (s *UserSystemService) Following(ctx context.Context, in *v1.FollowingRequest) (*v1.FollowingReply, error) {
 	s.log.WithContext(ctx).Infof("Following.Request: %s", in.String())
 
 	us := &biz.UserSearch{
@@ -81,7 +81,7 @@ func (s *MessageSystemService) Following(ctx context.Context, in *v1.FollowingRe
 	return &v1.FollowingReply{Users: replyUsers}, nil
 }
 
-func (s *MessageSystemService) Relation(ctx context.Context, in *v1.RelationRequest) (*v1.RelationReply, error) {
+func (s *UserSystemService) Relation(ctx context.Context, in *v1.RelationRequest) (*v1.RelationReply, error) {
 	s.log.WithContext(ctx).Infof("Relation.Request: %s", in.String())
 
 	ur := &biz.UserRelation{

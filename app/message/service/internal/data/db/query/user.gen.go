@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
 
-	"fxkt.tech/raiden/internal/data/db/model"
+	"fxkt.tech/raiden/app/message/service/internal/data/db/model"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 )
