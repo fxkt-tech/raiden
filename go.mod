@@ -3,7 +3,7 @@ module fxkt.tech/raiden
 go 1.18
 
 require (
-	github.com/go-kratos/kratos/v2 v2.1.5
+	github.com/go-kratos/kratos/v2 v2.2.1
 	github.com/google/wire v0.5.0
 	google.golang.org/genproto v0.0.0-20220126215142-9970aeb2e350
 	google.golang.org/grpc v1.44.0
@@ -14,7 +14,7 @@ require (
 )
 
 require (
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-logr/logr v1.2.1 // indirect
 	github.com/go-logr/stdr v1.2.0 // indirect
 	github.com/go-playground/form/v4 v4.2.0 // indirect

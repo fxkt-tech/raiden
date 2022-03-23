@@ -3,7 +3,7 @@
 
 openapi: 3.0.3
 info:
-    title: ""
+    title: UserSystem API
     version: 0.0.1
 paths:
     /api/v1/user/followers:
@@ -98,71 +98,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/RelationReply'
-    /v1/message/history:
-        get:
-            tags:
-                - MessageSystem
-            operationId: MessageSystem_ChatHistory
-            parameters:
-                - name: myUid
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: friendUid
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: count
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ChatHistoryReply'
-    /v1/message/send:
-        post:
-            tags:
-                - MessageSystem
-            operationId: MessageSystem_SendMessage
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SendMessageRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/SendMessageReply'
 components:
     schemas:
-        ChatHistoryReply:
-            type: object
-            properties:
-                msgs:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Message'
-        Content:
-            type: object
-            properties:
-                text:
-                    type: string
         FollowersReply:
             type: object
             properties:
@@ -177,18 +114,6 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/User'
-        Message:
-            type: object
-            properties:
-                sender:
-                    $ref: '#/components/schemas/User'
-                recver:
-                    $ref: '#/components/schemas/User'
-                content:
-                    $ref: '#/components/schemas/Content'
-                ctime:
-                    type: integer
-                    format: int64
         RegisterReply:
             type: object
             properties:
@@ -214,20 +139,6 @@ components:
                 action:
                     type: integer
                     format: int32
-        SendMessageReply:
-            type: object
-            properties: {}
-        SendMessageRequest:
-            type: object
-            properties:
-                senderUid:
-                    type: integer
-                    format: int32
-                content:
-                    $ref: '#/components/schemas/Content'
-                recverUid:
-                    type: integer
-                    format: int32
         User:
             type: object
             properties:
@@ -237,5 +148,4 @@ components:
                 nick:
                     type: string
 tags:
-    - name: MessageSystem
     - name: UserSystem

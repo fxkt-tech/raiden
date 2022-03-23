@@ -7,7 +7,29 @@ CREATE TABLE `user` (
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   KEY `idx_status` (`status`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 ROW_FORMAT = DYNAMIC COMMENT = '用户表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 ROW_FORMAT = DYNAMIC COMMENT = '用户';
+
+drop table if exists `followers`;
+
+CREATE TABLE `followers` (
+  `uid` int NOT NULL AUTO_INCREMENT,
+  `followers_uid` int NOT NULL DEFAULT '0' COMMENT '粉丝uid',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '状态 1被关注 2被取消关注',
+  `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`uid`),
+  KEY `idx_status` (`status`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 ROW_FORMAT = DYNAMIC COMMENT = '粉丝';
+
+drop table if exists `following`;
+
+CREATE TABLE `following` (
+  `uid` int NOT NULL AUTO_INCREMENT,
+  `following_uid` int NOT NULL DEFAULT '0' COMMENT '关注的人uid',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '状态 1关注 2取消关注',
+  `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`uid`),
+  KEY `idx_status` (`status`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 ROW_FORMAT = DYNAMIC COMMENT = '关注';
 
 drop table if exists `message`;
 

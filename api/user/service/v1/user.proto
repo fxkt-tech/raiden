@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "fxkt.tech/raiden/api/user/service/v1;v1";
+
+service UserSystem {
+  rpc Register (RegisterRequest) returns (RegisterReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/register",
+      body: "*",
+    };
+  }
+  rpc Followers (FollowersRequest) returns (FollowersReply) {
+    option (google.api.http) = {
+      get: "/api/v1/user/followers",
+    };
+  }
+  rpc Following (FollowingRequest) returns (FollowingReply) {
+    option (google.api.http) = {
+      get: "/api/v1/user/following",
+    };
+  }
+  rpc Relation (RelationRequest) returns (RelationReply) {
+    option (google.api.http) = {
+      post: "/api/v1/user/relation",
+      body: "*",
+    };
+  }
+}
+
+// model
+
+message User {
+  int32 uid = 1;
+  string nick = 2;
+}
+
+// request-reply
+
+message RegisterRequest {
+  string nick = 1;
+}
+message RegisterReply {
+  User user = 1;
+}
+
+message FollowersRequest {
+  int32 uid = 1;
+  int32 page = 2;
+  int32 count = 3;
+}
+message FollowersReply {
+  repeated User users = 1;
+}
+
+message FollowingRequest {
+  int32 uid = 1;
+  int32 page = 2;
+  int32 count = 3;
+}
+message FollowingReply {
+  repeated User users = 1;
+}
+
+message RelationRequest {
+  int32 active_uid = 1;
+  int32 passive_uid = 2;
+  int32 action = 3;
+}
+message RelationReply {}

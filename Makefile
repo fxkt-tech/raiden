@@ -1,7 +1,9 @@
-GOPATH:=$(shell go env GOPATH)
-VERSION=$(shell git describe --tags --always)
+APP_RELATIVE_PATH=$(shell a=`basename $$PWD` && cd .. && b=`basename $$PWD` && echo $$b/$$a)
+API_PROTO_FILES=$(shell cd ../../../api/$(APP_RELATIVE_PATH) && find . -name *.proto)
 INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
-API_PROTO_FILES=$(shell find api -name *.proto)
+APP_NAME=$(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
+APP_VERSION=$(shell head -n 1 VERSION)
+APP_IMAGE=$(shell echo $(APP_NAME) |awk -F '@' '{print "fxkt.tech/raiden/" $$0 ":$(APP_VERSION)"}')
 
 .PHONY: init
 # init env
@@ -16,35 +18,50 @@ init:
 .PHONY: errors
 # generate errors code
 errors:
-	protoc --proto_path=. \
-               --proto_path=./third_party \
-               --go_out=paths=source_relative:. \
-               --go-errors_out=paths=source_relative:. \
-               $(API_PROTO_FILES)
+	cd ../../../api/$(APP_RELATIVE_PATH) &&  protoc --proto_path=. \
+													--proto_path=../../../third_party \
+													--go_out=paths=source_relative:. \
+													--go-errors_out=paths=source_relative:. \
+													$(API_PROTO_FILES)
 
 .PHONY: config
 # generate internal proto
 config:
-	protoc --proto_path=. \
-	       --proto_path=./third_party \
- 	       --go_out=paths=source_relative:. \
-	       $(INTERNAL_PROTO_FILES)
+	protoc  --proto_path=. \
+			--proto_path=../../../third_party \
+			--go_out=paths=source_relative:. \
+			$(INTERNAL_PROTO_FILES)
 
 .PHONY: api
 # generate api proto
 api:
-	protoc --proto_path=. \
-	       --proto_path=./third_party \
- 	       --go_out=paths=source_relative:. \
- 	       --go-http_out=paths=source_relative:. \
- 	       --go-grpc_out=paths=source_relative:. \
- 	       --openapi_out==paths=source_relative:. \
-	       $(API_PROTO_FILES)
+	cd ../../../api/$(APP_RELATIVE_PATH) &&  protoc --proto_path=. \
+													--proto_path=../../../third_party \
+													--go_out=paths=source_relative:. \
+													--go-http_out=paths=source_relative:. \
+													--go-grpc_out=paths=source_relative:. \
+													--openapi_out==paths=source_relative:. \
+													$(API_PROTO_FILES)
 
 .PHONY: build
 # build
 build:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
+	mkdir -p bin/ && go build -o ./bin/ ./...
+
+.PHONY: docker-build
+docker-build:
+	cd ../../.. && docker build \
+		-f deploy/build/Dockerfile \
+		--build-arg APP_RELATIVE_PATH=$(APP_RELATIVE_PATH) \
+		-t $(APP_IMAGE) .
+
+.PHONY: docker-push
+docker-push:
+	cd ../../.. && docker push $(APP_IMAGE)
+
+.PHONY: docker-compose
+docker-compose:
+	cd ../../.. && docker-compose -f deploy/docker-compose/docker-compose.yaml -p ylproduce up
 
 .PHONY: generate
 # generate
@@ -54,12 +71,12 @@ generate:
 .PHONY: wire
 # wire
 wire:
-	cd cmd/raiden && wire
+	cd cmd/server && wire
 
 .PHONY: gorm
 # gorm
 gorm:
-	cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"
+	cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8" -tables "user,role,order"
 
 .PHONY: all
 # generate all
