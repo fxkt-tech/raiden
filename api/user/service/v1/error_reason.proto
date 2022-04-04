@@ -9,4 +9,5 @@ enum ErrorReason {
   option (errors.default_code) = 500;
 
   DATABASE = 0 [(errors.code) = 500];
+  VALIDATOR = 1 [(errors.code) = 400];
 }

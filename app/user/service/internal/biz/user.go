@@ -25,8 +25,8 @@ type UserRelation struct {
 
 type UserSystemRepo interface {
 	Register(context.Context, *User) error
-	Followers(context.Context, *UserSearch) ([]*User, error)
-	Following(context.Context, *UserSearch) ([]*User, error)
+	Followers(context.Context, *UserSearch) ([]*User, int32, error)
+	Following(context.Context, *UserSearch) ([]*User, int32, error)
 	Relation(context.Context, *UserRelation) error
 }
 
@@ -43,11 +43,11 @@ func (uc *UserSystemUsecase) Register(ctx context.Context, u *User) error {
 	return uc.repo.Register(ctx, u)
 }
 
-func (uc *UserSystemUsecase) Followers(ctx context.Context, us *UserSearch) ([]*User, error) {
+func (uc *UserSystemUsecase) Followers(ctx context.Context, us *UserSearch) ([]*User, int32, error) {
 	return uc.repo.Followers(ctx, us)
 }
 
-func (uc *UserSystemUsecase) Following(ctx context.Context, us *UserSearch) ([]*User, error) {
+func (uc *UserSystemUsecase) Following(ctx context.Context, us *UserSearch) ([]*User, int32, error) {
 	return uc.repo.Following(ctx, us)
 }
 

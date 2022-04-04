@@ -22,15 +22,20 @@ func NewUserSystemService(uc *biz.UserSystemUsecase, logger log.Logger) *UserSys
 func (s *UserSystemService) Register(ctx context.Context, in *v1.RegisterRequest) (*v1.RegisterReply, error) {
 	s.log.WithContext(ctx).Infof("SendMessage.Request: %s", in.String())
 
-	msg := &biz.User{
+	user := &biz.User{
 		Nick: in.Nick,
 	}
-	err := s.uc.Register(ctx, msg)
+	err := s.uc.Register(ctx, user)
 	if err != nil {
 		return nil, err
 	}
 
-	return &v1.RegisterReply{}, nil
+	replyUser := &v1.User{
+		Uid:  user.Uid,
+		Nick: user.Nick,
+	}
+
+	return &v1.RegisterReply{User: replyUser}, nil
 }
 
 func (s *UserSystemService) Followers(ctx context.Context, in *v1.FollowersRequest) (*v1.FollowersReply, error) {
@@ -41,7 +46,7 @@ func (s *UserSystemService) Followers(ctx context.Context, in *v1.FollowersReque
 		Page:  in.Page,
 		Count: in.Count,
 	}
-	users, err := s.uc.Followers(ctx, ms)
+	users, total, err := s.uc.Followers(ctx, ms)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +59,10 @@ func (s *UserSystemService) Followers(ctx context.Context, in *v1.FollowersReque
 		}
 	}
 
-	return &v1.FollowersReply{Users: replyUsers}, nil
+	return &v1.FollowersReply{
+		Users: replyUsers,
+		Total: total,
+	}, nil
 }
 
 func (s *UserSystemService) Following(ctx context.Context, in *v1.FollowingRequest) (*v1.FollowingReply, error) {
@@ -65,7 +73,7 @@ func (s *UserSystemService) Following(ctx context.Context, in *v1.FollowingReque
 		Page:  in.Page,
 		Count: in.Count,
 	}
-	users, err := s.uc.Following(ctx, us)
+	users, total, err := s.uc.Following(ctx, us)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +86,10 @@ func (s *UserSystemService) Following(ctx context.Context, in *v1.FollowingReque
 		}
 	}
 
-	return &v1.FollowingReply{Users: replyUsers}, nil
+	return &v1.FollowingReply{
+		Users: replyUsers,
+		Total: total,
+	}, nil
 }
 
 func (s *UserSystemService) Relation(ctx context.Context, in *v1.RelationRequest) (*v1.RelationReply, error) {

@@ -14,6 +14,7 @@ init:
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@v0.6.1
+	go install github.com/envoyproxy/protoc-gen-validate@v0.6.3
 
 .PHONY: errors
 # generate errors code
@@ -39,12 +40,12 @@ config:
 api:
 	cd ../../../api/$(APP_RELATIVE_PATH) && \
 	protoc --proto_path=. \
-		--proto_path=../../../ \
 		--proto_path=../../../third_party \
 		--go_out=paths=source_relative:. \
 		--go-http_out=paths=source_relative:. \
 		--go-grpc_out=paths=source_relative:. \
 		--openapi_out==paths=source_relative:. \
+		--validate_out=paths=source_relative,lang=go:. \
 		$(API_PROTO_FILES)
 
 .PHONY: build
@@ -80,7 +81,14 @@ wire:
 .PHONY: gorm
 # gorm
 gorm:
-	mkdir -p internal/data/db/query && cd internal/data/db/query && gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8" -tables "user"
+	mkdir -p internal/data/db/query && \
+	cd internal/data/db/query && \
+	gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?parseTime=true&loc=Local&charset=utf8mb4" -tables "user,followers,following"
+
+.PHONY: sql
+# sql
+sql:
+	mysql -h127.0.0.1 -uroot -pqingchuan495 -Ddb_message < ../../../doc/table.sql
 
 .PHONY: all
 # generate all

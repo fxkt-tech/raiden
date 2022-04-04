@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"fxkt.tech/raiden/app/user/service/internal/conf"
@@ -27,7 +28,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "conf", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "", "config path, eg: -conf configs/dev.yaml")
 }
 
 func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
@@ -37,18 +38,24 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 		kratos.Version(Version),
 		kratos.Metadata(map[string]string{}),
 		kratos.Logger(logger),
-		kratos.Server(
-			hs,
-			gs,
-		),
+		kratos.Server(hs, gs),
 	)
 }
 
 func main() {
 	flag.Parse()
+	if flagconf == "" {
+		env := os.Getenv("RAIDEN_ENV")
+		switch env {
+		case "prod", "test", "dev", "local":
+			flagconf = fmt.Sprintf("configs/%s.yaml", env)
+		default:
+			panic(fmt.Sprintf("unkown env: %s.", env))
+		}
+	}
+
 	logger := log.With(log.NewStdLogger(os.Stdout),
 		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
 		"service.id", id,
 		"service.name", Name,
 		"service.version", Version,

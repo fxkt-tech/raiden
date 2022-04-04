@@ -107,6 +107,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/User'
+                total:
+                    type: integer
+                    format: int32
         FollowingReply:
             type: object
             properties:
@@ -114,6 +117,9 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/User'
+                total:
+                    type: integer
+                    format: int32
         RegisterReply:
             type: object
             properties:

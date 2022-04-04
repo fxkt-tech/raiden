@@ -3,6 +3,7 @@ module fxkt.tech/raiden
 go 1.18
 
 require (
+	github.com/envoyproxy/protoc-gen-validate v0.1.0
 	github.com/go-kratos/kratos/v2 v2.2.1
 	github.com/google/wire v0.5.0
 	google.golang.org/genproto v0.0.0-20220126215142-9970aeb2e350

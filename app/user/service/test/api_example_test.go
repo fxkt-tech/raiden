@@ -28,7 +28,7 @@ var service, close = func() (v1.UserSystemHTTPClient, func()) {
 
 func TestRegister(t *testing.T) {
 	req := &v1.RegisterRequest{
-		Nick: "Justyer",
+		Nick: "Myzh",
 	}
 	rsp, err := service.Register(context.Background(), req)
 	if err != nil {
