@@ -40,6 +40,7 @@ config:
 api:
 	cd ../../../api/$(APP_RELATIVE_PATH) && \
 	protoc --proto_path=. \
+		--proto_path=../../../ \
 		--proto_path=../../../third_party \
 		--go_out=paths=source_relative:. \
 		--go-http_out=paths=source_relative:. \
@@ -78,17 +79,17 @@ generate:
 wire:
 	cd cmd/server && wire
 
-.PHONY: gorm
-# gorm
-gorm:
+.PHONY: pogen
+# po gen
+pogen:
 	mkdir -p internal/data/db/query && \
-	cd internal/data/db/query && \
-	gentool -dsn "root:qingchuan495@tcp(127.0.0.1:3306)/db_message?parseTime=true&loc=Local&charset=utf8mb4" -tables "user,followers,following"
+	cd internal/data/db && \
+	go run gen.go
 
 .PHONY: sql
 # sql
 sql:
-	mysql -h127.0.0.1 -uroot -pqingchuan495 -Ddb_message < ../../../doc/table.sql
+	mysql -h127.0.0.1 -uroot -pqingchuan495 -Ddb_raiden < ../../../doc/table.sql
 
 .PHONY: all
 # generate all

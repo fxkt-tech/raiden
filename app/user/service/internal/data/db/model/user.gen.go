@@ -12,10 +12,10 @@ const TableNameUser = "user"
 
 // User mapped from table <user>
 type User struct {
-	UID    int32     `gorm:"column:uid;primaryKey;autoIncrement:true" json:"uid"`
-	Nick   string    `gorm:"column:nick;not null" json:"nick"`               // 昵称
-	Status int32     `gorm:"column:status;not null;default:1" json:"status"` // 状态 1在线 2离线
-	Ctime  time.Time `gorm:"column:ctime;not null;default:CURRENT_TIMESTAMP" json:"ctime"`
+	UID    int32     `gorm:"column:uid;type:int;primaryKey;autoIncrement:true" json:"uid"`
+	Nick   string    `gorm:"column:nick;type:varchar(8);not null" json:"nick"`                                        // 昵称
+	Status int32     `gorm:"column:status;type:tinyint;not null;index:idx_status,priority:1;default:1" json:"status"` // 状态 1在线 2离线
+	Ctime  time.Time `gorm:"column:ctime;type:datetime;not null;default:CURRENT_TIMESTAMP" json:"ctime"`
 }
 
 // TableName User's table name

@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package feed.v1;
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "api/user/service/v1/user.proto";
+
+option go_package = "fxkt.tech/raiden/api/feed/service/v1;v1";
+
+service FeedSystem {
+  rpc Publish (PublishRequest) returns (PublishReply) {
+    option (google.api.http) = {
+      post: "/api/feed/v1/publish",
+      body: "*"
+    };
+  }
+  rpc Following (FollowingRequest) returns (FollowingReply) {
+    option (google.api.http) = {
+      get: "/api/feed/v1/following",
+    };
+  }
+  rpc History (HistoryRequest) returns (HistoryReply) {
+    option (google.api.http) = {
+      get: "/api/feed/v1/history",
+    };
+  }
+}
+
+// model
+
+message Dynamic {
+  int64 dmc_id = 1;
+  int32 dmc_type = 2;
+  user.v1.User user = 3;
+  string text = 4;
+  repeated string imgs = 5;
+}
+
+// request-reply
+
+message PublishRequest {
+  int32 uid = 1 [(validate.rules).int32 = { gt: 0 }];
+  int32 dmc_type = 2;
+  string text = 3;
+  repeated string imgs = 4;
+}
+message PublishReply {
+  int64 dmc_id = 1;
+}
+
+message FollowingRequest {
+  int32 uid = 1 [(validate.rules).int32 = { gt: 0 }];
+  int64 last_id = 2 [(validate.rules).int64 = { gte: 0 }];
+  int32 page_size = 3 [(validate.rules).int32 = { gt: 0, lte: 20 }];
+}
+message FollowingReply {
+  repeated Dynamic dmcs = 1;
+}
+
+message HistoryRequest {
+  int32 uid = 1 [(validate.rules).int32 = { gt: 0 }];
+  int64 last_id = 2 [(validate.rules).int64 = { gte: 0 }];
+  int32 page_size = 3 [(validate.rules).int32 = { gt: 0, lte: 20 }];
+}
+message HistoryReply {
+  repeated Dynamic dmcs = 1;
+}

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"fxkt.tech/raiden/app/user/service/internal/conf"
+	"fxkt.tech/raiden/app/feed/service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

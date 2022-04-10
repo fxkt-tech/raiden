@@ -37,7 +37,7 @@ func (r *userSystemRepo) Register(ctx context.Context, u *biz.User) error {
 }
 func (r *userSystemRepo) Followers(ctx context.Context, us *biz.UserSearch) ([]*biz.User, int32, error) {
 	var (
-		dbf     = r.data.db.Follower
+		dbf     = r.data.db.UserFollower
 		dbu     = r.data.db.User
 		poUsers []*model.User
 	)
@@ -63,7 +63,7 @@ func (r *userSystemRepo) Followers(ctx context.Context, us *biz.UserSearch) ([]*
 }
 func (r *userSystemRepo) Following(ctx context.Context, us *biz.UserSearch) ([]*biz.User, int32, error) {
 	var (
-		dbf     = r.data.db.Following
+		dbf     = r.data.db.UserFollowing
 		dbu     = r.data.db.User
 		poUsers []*model.User
 	)
@@ -90,8 +90,8 @@ func (r *userSystemRepo) Following(ctx context.Context, us *biz.UserSearch) ([]*
 func (r *userSystemRepo) Relation(ctx context.Context, ur *biz.UserRelation) error {
 	var (
 		q      = r.data.db
-		dbfg   = r.data.db.Following
-		dbfr   = r.data.db.Follower
+		dbfg   = r.data.db.UserFollowing
+		dbfr   = r.data.db.UserFollower
 		status int32
 	)
 
@@ -104,12 +104,12 @@ func (r *userSystemRepo) Relation(ctx context.Context, ur *biz.UserRelation) err
 		return v1.ErrorValidator("action is not allowed.")
 	}
 
-	poFollowing := &model.Following{
+	poFollowing := &model.UserFollowing{
 		UID:          ur.ActiveUid,
 		FollowingUID: ur.PassiveUid,
 		Status:       status,
 	}
-	poFollwers := &model.Follower{
+	poFollwers := &model.UserFollower{
 		UID:          ur.PassiveUid,
 		FollowersUID: ur.ActiveUid,
 		Status:       status,

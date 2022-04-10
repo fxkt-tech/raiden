@@ -13,43 +13,38 @@ import (
 
 func Use(db *gorm.DB) *Query {
 	return &Query{
-		db:            db,
-		User:          newUser(db),
-		UserFollower:  newUserFollower(db),
-		UserFollowing: newUserFollowing(db),
+		db:               db,
+		DynamicFollowing: newDynamicFollowing(db),
+		DynamicHistory:   newDynamicHistory(db),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	User          user
-	UserFollower  userFollower
-	UserFollowing userFollowing
+	DynamicFollowing dynamicFollowing
+	DynamicHistory   dynamicHistory
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:            db,
-		User:          q.User.clone(db),
-		UserFollower:  q.UserFollower.clone(db),
-		UserFollowing: q.UserFollowing.clone(db),
+		db:               db,
+		DynamicFollowing: q.DynamicFollowing.clone(db),
+		DynamicHistory:   q.DynamicHistory.clone(db),
 	}
 }
 
 type queryCtx struct {
-	User          userDo
-	UserFollower  userFollowerDo
-	UserFollowing userFollowingDo
+	DynamicFollowing dynamicFollowingDo
+	DynamicHistory   dynamicHistoryDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		User:          *q.User.WithContext(ctx),
-		UserFollower:  *q.UserFollower.WithContext(ctx),
-		UserFollowing: *q.UserFollowing.WithContext(ctx),
+		DynamicFollowing: *q.DynamicFollowing.WithContext(ctx),
+		DynamicHistory:   *q.DynamicHistory.WithContext(ctx),
 	}
 }
 
