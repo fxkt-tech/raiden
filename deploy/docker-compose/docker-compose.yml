@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  user-service:
+    image: fxkt.tech/raiden/user-service:latest
+    hostname: user-service
+    ports:
+      - 8000:8000
+      - 9000:9000
+    environment:
+      RAIDEN_ENV: local
+    networks:
+      - common
+  feed-service:
+    image: fxkt.tech/raiden/feed-service:latest
+    hostname: feed-service
+    ports:
+      - 8001:8000
+      - 9001:9000
+    environment:
+      RAIDEN_ENV: local
+    depends_on:
+      - user-service
+    networks:
+      - common
+networks:
+  common:
+    driver: bridge

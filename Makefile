@@ -2,8 +2,9 @@ APP_RELATIVE_PATH=$(shell a=`basename $$PWD` && cd .. && b=`basename $$PWD` && e
 API_PROTO_FILES=$(shell cd ../../../api/$(APP_RELATIVE_PATH) && find . -name *.proto)
 INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
 APP_NAME=$(shell echo $(APP_RELATIVE_PATH) | sed -En "s/\//-/p")
-APP_VERSION=$(shell head -n 1 VERSION)
-APP_IMAGE=$(shell echo $(APP_NAME) |awk -F '@' '{print "fxkt.tech/raiden/" $$0 ":$(APP_VERSION)"}')
+# APP_VERSION=$(shell head -n 1 VERSION)
+APP_VERSION=latest
+APP_IMAGE="fxkt.tech/raiden/"$(APP_NAME):$(APP_VERSION)
 
 .PHONY: init
 # init env
@@ -67,7 +68,7 @@ docker-push:
 
 .PHONY: docker-compose
 docker-compose:
-	cd ../../.. && docker-compose -f deploy/docker-compose/docker-compose.yaml -p ylproduce up
+	docker-compose -f deploy/docker-compose/docker-compose.yml -p raidenblade up
 
 .PHONY: generate
 # generate
