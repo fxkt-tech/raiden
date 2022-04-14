@@ -25,6 +25,9 @@ func NewfeedSystemRepo(data *Data, logger log.Logger) biz.FeedSystemRepo {
 	}
 }
 
+// 发布视频时，首先插入自身的历史纪录中；
+// 然后插入到自身的关注动态列表中；
+// 最后获取粉丝列表，逐条插入他们的关注动态列表中。
 func (r *feedSystemRepo) Publish(ctx context.Context, d *biz.Dynamic) error {
 	return r.data.db.Transaction(func(tx *query.Query) error {
 		var (
@@ -45,6 +48,20 @@ func (r *feedSystemRepo) Publish(ctx context.Context, d *biz.Dynamic) error {
 			return v1.ErrorDatabase(err.Error())
 		}
 		d.DmcId = poDmch.DmcID
+
+		poDmcf := &model.DynamicFollowing{
+			DmcID:       poDmch.DmcID,
+			DmcType:     d.DmcType,
+			ForUID:      d.User.Uid,
+			ByUID:       d.User.Uid,
+			Txt:         d.Text,
+			Imgs:        json.ToString(&d.Imgs),
+			PublishTime: nowtime,
+		}
+		err = dbdf.WithContext(ctx).Create(poDmcf)
+		if err != nil {
+			return v1.ErrorDatabase(err.Error())
+		}
 
 		var page, count int32 = 1, 20
 		for {
@@ -100,14 +117,22 @@ func (r *feedSystemRepo) Following(ctx context.Context, ds *biz.DynamicSearch) (
 
 	dmcs := make([]*biz.Dynamic, len(poDmcf))
 	for i, dmcf := range poDmcf {
+		var user *biz.User
+		reply, err := r.data.userService.Info(ctx, &userv1.InfoRequest{Uid: dmcf.ByUID})
+		if err != nil {
+			user = &biz.User{Uid: dmcf.ByUID}
+		} else {
+			user = &biz.User{
+				Uid:  dmcf.ByUID,
+				Nick: reply.User.Nick,
+			}
+		}
 		var imgs []string
 		json.ToObject(dmcf.Imgs, &imgs)
 		dmcs[i] = &biz.Dynamic{
-			DmcId:   dmcf.DmcID,
-			DmcType: dmcf.DmcType,
-			User: &biz.User{
-				Uid: dmcf.ByUID,
-			},
+			DmcId:       dmcf.DmcID,
+			DmcType:     dmcf.DmcType,
+			User:        user,
 			Text:        dmcf.Txt,
 			Imgs:        imgs,
 			PublishTime: dmcf.PublishTime,
@@ -136,14 +161,22 @@ func (r *feedSystemRepo) History(ctx context.Context, ds *biz.DynamicSearch) ([]
 
 	dmcs := make([]*biz.Dynamic, len(poDmch))
 	for i, dmch := range poDmch {
+		var user *biz.User
+		reply, err := r.data.userService.Info(ctx, &userv1.InfoRequest{Uid: dmch.ByUID})
+		if err != nil {
+			user = &biz.User{Uid: dmch.ByUID}
+		} else {
+			user = &biz.User{
+				Uid:  dmch.ByUID,
+				Nick: reply.User.Nick,
+			}
+		}
 		var imgs []string
 		json.ToObject(dmch.Imgs, &imgs)
 		dmcs[i] = &biz.Dynamic{
-			DmcId:   dmch.DmcID,
-			DmcType: dmch.DmcType,
-			User: &biz.User{
-				Uid: dmch.ByUID,
-			},
+			DmcId:       dmch.DmcID,
+			DmcType:     dmch.DmcType,
+			User:        user,
 			Text:        dmch.Txt,
 			Imgs:        imgs,
 			PublishTime: dmch.PublishTime,

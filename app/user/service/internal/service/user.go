@@ -20,7 +20,7 @@ func NewUserSystemService(uc *biz.UserSystemUsecase, logger log.Logger) *UserSys
 }
 
 func (s *UserSystemService) Register(ctx context.Context, in *v1.RegisterRequest) (*v1.RegisterReply, error) {
-	s.log.WithContext(ctx).Infof("SendMessage.Request: %s", in.String())
+	s.log.WithContext(ctx).Infof("Register.Request: %s", in.String())
 
 	user := &biz.User{
 		Nick: in.Nick,
@@ -36,6 +36,22 @@ func (s *UserSystemService) Register(ctx context.Context, in *v1.RegisterRequest
 	}
 
 	return &v1.RegisterReply{User: replyUser}, nil
+}
+
+func (s *UserSystemService) Info(ctx context.Context, in *v1.InfoRequest) (*v1.InfoReply, error) {
+	s.log.WithContext(ctx).Infof("Info.Request: %s", in.String())
+
+	user, err := s.uc.Info(ctx, in.Uid)
+	if err != nil {
+		return nil, err
+	}
+
+	replyUser := &v1.User{
+		Uid:  user.Uid,
+		Nick: user.Nick,
+	}
+
+	return &v1.InfoReply{User: replyUser}, nil
 }
 
 func (s *UserSystemService) Followers(ctx context.Context, in *v1.FollowersRequest) (*v1.FollowersReply, error) {

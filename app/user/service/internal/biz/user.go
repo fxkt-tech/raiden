@@ -25,6 +25,7 @@ type UserRelation struct {
 
 type UserSystemRepo interface {
 	Register(context.Context, *User) error
+	Info(context.Context, int32) (*User, error)
 	Followers(context.Context, *UserSearch) ([]*User, int32, error)
 	Following(context.Context, *UserSearch) ([]*User, int32, error)
 	Relation(context.Context, *UserRelation) error
@@ -41,6 +42,10 @@ func NewUserSystemUsecase(repo UserSystemRepo, logger log.Logger) *UserSystemUse
 
 func (uc *UserSystemUsecase) Register(ctx context.Context, u *User) error {
 	return uc.repo.Register(ctx, u)
+}
+
+func (uc *UserSystemUsecase) Info(ctx context.Context, uid int32) (*User, error) {
+	return uc.repo.Info(ctx, uid)
 }
 
 func (uc *UserSystemUsecase) Followers(ctx context.Context, us *UserSearch) ([]*User, int32, error) {

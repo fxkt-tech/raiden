@@ -58,7 +58,8 @@ func (s *FeedSystemService) Following(ctx context.Context, in *v1.FollowingReque
 			DmcId:   dmc.DmcId,
 			DmcType: dmc.DmcType,
 			User: &userv1.User{
-				Uid: dmc.User.Uid,
+				Uid:  dmc.User.Uid,
+				Nick: dmc.User.Nick,
 			},
 			Text: dmc.Text,
 			Imgs: dmc.Imgs,

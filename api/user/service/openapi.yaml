@@ -62,6 +62,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/FollowingReply'
+    /api/user/v1/info:
+        get:
+            tags:
+                - UserSystem
+            operationId: UserSystem_Info
+            parameters:
+                - name: uid
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/InfoReply'
     /api/user/v1/register:
         post:
             tags:
@@ -120,6 +138,11 @@ components:
                 total:
                     type: integer
                     format: int32
+        InfoReply:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/User'
         RegisterReply:
             type: object
             properties:

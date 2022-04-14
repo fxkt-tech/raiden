@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserSystemClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error)
+	Info(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoReply, error)
 	Followers(ctx context.Context, in *FollowersRequest, opts ...grpc.CallOption) (*FollowersReply, error)
 	Following(ctx context.Context, in *FollowingRequest, opts ...grpc.CallOption) (*FollowingReply, error)
 	Relation(ctx context.Context, in *RelationRequest, opts ...grpc.CallOption) (*RelationReply, error)
@@ -39,6 +40,15 @@ func NewUserSystemClient(cc grpc.ClientConnInterface) UserSystemClient {
 func (c *userSystemClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterReply, error) {
 	out := new(RegisterReply)
 	err := c.cc.Invoke(ctx, "/user.v1.UserSystem/Register", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userSystemClient) Info(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoReply, error) {
+	out := new(InfoReply)
+	err := c.cc.Invoke(ctx, "/user.v1.UserSystem/Info", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -77,6 +87,7 @@ func (c *userSystemClient) Relation(ctx context.Context, in *RelationRequest, op
 // for forward compatibility
 type UserSystemServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
+	Info(context.Context, *InfoRequest) (*InfoReply, error)
 	Followers(context.Context, *FollowersRequest) (*FollowersReply, error)
 	Following(context.Context, *FollowingRequest) (*FollowingReply, error)
 	Relation(context.Context, *RelationRequest) (*RelationReply, error)
@@ -89,6 +100,9 @@ type UnimplementedUserSystemServer struct {
 
 func (UnimplementedUserSystemServer) Register(context.Context, *RegisterRequest) (*RegisterReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedUserSystemServer) Info(context.Context, *InfoRequest) (*InfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Info not implemented")
 }
 func (UnimplementedUserSystemServer) Followers(context.Context, *FollowersRequest) (*FollowersReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Followers not implemented")
@@ -126,6 +140,24 @@ func _UserSystem_Register_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserSystemServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserSystem_Info_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserSystemServer).Info(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.UserSystem/Info",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserSystemServer).Info(ctx, req.(*InfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -194,6 +226,10 @@ var UserSystem_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Register",
 			Handler:    _UserSystem_Register_Handler,
+		},
+		{
+			MethodName: "Info",
+			Handler:    _UserSystem_Info_Handler,
 		},
 		{
 			MethodName: "Followers",

@@ -20,6 +20,7 @@ const _ = http.SupportPackageIsVersion1
 type UserSystemHTTPServer interface {
 	Followers(context.Context, *FollowersRequest) (*FollowersReply, error)
 	Following(context.Context, *FollowingRequest) (*FollowingReply, error)
+	Info(context.Context, *InfoRequest) (*InfoReply, error)
 	Register(context.Context, *RegisterRequest) (*RegisterReply, error)
 	Relation(context.Context, *RelationRequest) (*RelationReply, error)
 }
@@ -27,6 +28,7 @@ type UserSystemHTTPServer interface {
 func RegisterUserSystemHTTPServer(s *http.Server, srv UserSystemHTTPServer) {
 	r := s.Route("/")
 	r.POST("/api/user/v1/register", _UserSystem_Register0_HTTP_Handler(srv))
+	r.GET("/api/user/v1/info", _UserSystem_Info0_HTTP_Handler(srv))
 	r.GET("/api/user/v1/followers", _UserSystem_Followers0_HTTP_Handler(srv))
 	r.GET("/api/user/v1/following", _UserSystem_Following0_HTTP_Handler(srv))
 	r.POST("/api/user/v1/relation", _UserSystem_Relation0_HTTP_Handler(srv))
@@ -47,6 +49,25 @@ func _UserSystem_Register0_HTTP_Handler(srv UserSystemHTTPServer) func(ctx http.
 			return err
 		}
 		reply := out.(*RegisterReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _UserSystem_Info0_HTTP_Handler(srv UserSystemHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in InfoRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/user.v1.UserSystem/Info")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Info(ctx, req.(*InfoRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*InfoReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -111,6 +132,7 @@ func _UserSystem_Relation0_HTTP_Handler(srv UserSystemHTTPServer) func(ctx http.
 type UserSystemHTTPClient interface {
 	Followers(ctx context.Context, req *FollowersRequest, opts ...http.CallOption) (rsp *FollowersReply, err error)
 	Following(ctx context.Context, req *FollowingRequest, opts ...http.CallOption) (rsp *FollowingReply, err error)
+	Info(ctx context.Context, req *InfoRequest, opts ...http.CallOption) (rsp *InfoReply, err error)
 	Register(ctx context.Context, req *RegisterRequest, opts ...http.CallOption) (rsp *RegisterReply, err error)
 	Relation(ctx context.Context, req *RelationRequest, opts ...http.CallOption) (rsp *RelationReply, err error)
 }
@@ -141,6 +163,19 @@ func (c *UserSystemHTTPClientImpl) Following(ctx context.Context, in *FollowingR
 	pattern := "/api/user/v1/following"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/user.v1.UserSystem/Following"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *UserSystemHTTPClientImpl) Info(ctx context.Context, in *InfoRequest, opts ...http.CallOption) (*InfoReply, error) {
+	var out InfoReply
+	pattern := "/api/user/v1/info"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/user.v1.UserSystem/Info"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

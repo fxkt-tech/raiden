@@ -14,6 +14,11 @@ service UserSystem {
       body: "*",
     };
   }
+  rpc Info (InfoRequest) returns (InfoReply) {
+    option (google.api.http) = {
+      get: "/api/user/v1/info",
+    };
+  }
   rpc Followers (FollowersRequest) returns (FollowersReply) {
     option (google.api.http) = {
       get: "/api/user/v1/followers",
@@ -45,6 +50,13 @@ message RegisterRequest {
   string nick = 1 [(validate.rules).string = { min_len: 3, max_len: 8 }];
 }
 message RegisterReply {
+  User user = 1;
+}
+
+message InfoRequest {
+  int32 uid = 1;
+}
+message InfoReply {
   User user = 1;
 }
 

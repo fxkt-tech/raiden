@@ -35,6 +35,20 @@ func (r *userSystemRepo) Register(ctx context.Context, u *biz.User) error {
 	u.Uid = poUser.UID
 	return nil
 }
+
+// 只能查询正常状态的用户信息
+func (r *userSystemRepo) Info(ctx context.Context, uid int32) (*biz.User, error) {
+	dbu := r.data.db.User
+	u, err := dbu.WithContext(ctx).Where(dbu.UID.Eq(uid), dbu.Status.Eq(1)).First()
+	if err != nil {
+		return nil, v1.ErrorDatabase(err.Error())
+	}
+	return &biz.User{
+		Uid:  u.UID,
+		Nick: u.Nick,
+	}, nil
+}
+
 func (r *userSystemRepo) Followers(ctx context.Context, us *biz.UserSearch) ([]*biz.User, int32, error) {
 	var (
 		dbf     = r.data.db.UserFollower
