@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package feed.v1;
+package raiden.feed.v1;
 
 import "validate/validate.proto";
 import "google/api/annotations.proto";

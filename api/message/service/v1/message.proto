@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package message.v1;
+package raiden.message.v1;
 
 import "google/api/annotations.proto";
 

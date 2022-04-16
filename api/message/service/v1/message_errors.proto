@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package raiden.v1;
+package raiden.message.v1;
 import "errors/errors.proto";
 
-option go_package = "fxkt.tech/raiden/api/raiden/v1;v1";
+option go_package = "fxkt.tech/raiden/api/message/service/v1;v1";
 
 enum ErrorReason {
   option (errors.default_code) = 500;

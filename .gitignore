@@ -37,3 +37,4 @@ bin/
 
 local.yaml
 *.pb.*.go
+*.pb.go

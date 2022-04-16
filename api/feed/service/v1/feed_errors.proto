@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-package feed.v1;
+package raiden.feed.v1;
+
 import "errors/errors.proto";
 
 option go_package = "fxkt.tech/raiden/api/feed/service/v1;v1";
