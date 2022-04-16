@@ -26,7 +26,8 @@ type MessageSearch struct {
 
 type MessageSystemRepo interface {
 	SendMessage(context.Context, *Message) error
-	ChatHistory(context.Context, *MessageSearch) ([]*Message, error)
+	MessageHistory(context.Context, *MessageSearch) ([]*Message, error)
+	RecallMessage(context.Context, *MessageSearch) error
 }
 
 type MessageSystemUsecase struct {
@@ -42,6 +43,10 @@ func (uc *MessageSystemUsecase) SendMessage(ctx context.Context, m *Message) err
 	return uc.repo.SendMessage(ctx, m)
 }
 
-func (uc *MessageSystemUsecase) ChatHistory(ctx context.Context, ms *MessageSearch) ([]*Message, error) {
-	return uc.repo.ChatHistory(ctx, ms)
+func (uc *MessageSystemUsecase) MessageHistory(ctx context.Context, ms *MessageSearch) ([]*Message, error) {
+	return uc.repo.MessageHistory(ctx, ms)
+}
+
+func (uc *MessageSystemUsecase) RecallMessage(ctx context.Context, ms *MessageSearch) error {
+	return uc.repo.RecallMessage(ctx, ms)
 }

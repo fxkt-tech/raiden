@@ -10,7 +10,7 @@ paths:
         get:
             tags:
                 - MessageSystem
-            operationId: MessageSystem_ChatHistory
+            operationId: MessageSystem_MessageHistory
             parameters:
                 - name: senderUid
                   in: query
@@ -38,7 +38,30 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ChatHistoryReply'
+                                $ref: '#/components/schemas/MessageHistoryReply'
+    /api/message/v1/recall:
+        get:
+            tags:
+                - MessageSystem
+            operationId: MessageSystem_RecallMessage
+            parameters:
+                - name: senderUid
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: recverUid
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RecallMessageReply'
     /api/message/v1/send:
         post:
             tags:
@@ -59,13 +82,6 @@ paths:
                                 $ref: '#/components/schemas/SendMessageReply'
 components:
     schemas:
-        ChatHistoryReply:
-            type: object
-            properties:
-                msgs:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Message'
         Content:
             type: object
             properties:
@@ -85,6 +101,16 @@ components:
                 ctime:
                     type: integer
                     format: int64
+        MessageHistoryReply:
+            type: object
+            properties:
+                msgs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Message'
+        RecallMessageReply:
+            type: object
+            properties: {}
         SendMessageReply:
             type: object
             properties: {}

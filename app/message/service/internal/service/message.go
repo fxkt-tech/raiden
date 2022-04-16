@@ -37,8 +37,8 @@ func (s *MessageSystemService) SendMessage(ctx context.Context, in *v1.SendMessa
 	return &v1.SendMessageReply{}, nil
 }
 
-func (s *MessageSystemService) ChatHistory(ctx context.Context, in *v1.ChatHistoryRequest) (*v1.ChatHistoryReply, error) {
-	s.log.WithContext(ctx).Infof("ChatHistory.Request: %s", in.String())
+func (s *MessageSystemService) MessageHistory(ctx context.Context, in *v1.MessageHistoryRequest) (*v1.MessageHistoryReply, error) {
+	s.log.WithContext(ctx).Infof("MessageHistory.Request: %s", in.String())
 
 	ms := &biz.MessageSearch{
 		SenderUid: in.SenderUid,
@@ -46,7 +46,7 @@ func (s *MessageSystemService) ChatHistory(ctx context.Context, in *v1.ChatHisto
 		Page:      in.Page,
 		Count:     in.Count,
 	}
-	msgs, err := s.uc.ChatHistory(ctx, ms)
+	msgs, err := s.uc.MessageHistory(ctx, ms)
 	if err != nil {
 		return nil, err
 	}
@@ -67,5 +67,5 @@ func (s *MessageSystemService) ChatHistory(ctx context.Context, in *v1.ChatHisto
 		}
 	}
 
-	return &v1.ChatHistoryReply{Msgs: replyMsgs}, nil
+	return &v1.MessageHistoryReply{Msgs: replyMsgs}, nil
 }

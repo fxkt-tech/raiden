@@ -36,3 +36,4 @@ bin/
 *.swp
 
 local.yaml
+*.pb.*.go

@@ -43,13 +43,13 @@ func TestSendMessage(t *testing.T) {
 }
 
 func TestChatHistory(t *testing.T) {
-	req := &v1.ChatHistoryRequest{
+	req := &v1.MessageHistoryRequest{
 		SenderUid: 1,
 		RecverUid: 2,
 		Page:      1,
 		Count:     10,
 	}
-	rsp, err := service.ChatHistory(context.Background(), req)
+	rsp, err := service.MessageHistory(context.Background(), req)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -7,15 +7,20 @@ import "google/api/annotations.proto";
 option go_package = "fxkt.tech/raiden/api/message/service/v1;v1";
 
 service MessageSystem {
-  rpc ChatHistory (ChatHistoryRequest) returns (ChatHistoryReply) {
-    option (google.api.http) = {
-      get: "/api/message/v1/history",
-    };
-  }
   rpc SendMessage (SendMessageRequest) returns (SendMessageReply) {
     option (google.api.http) = {
       post: "/api/message/v1/send",
       body: "*",
+    };
+  }
+  rpc MessageHistory (MessageHistoryRequest) returns (MessageHistoryReply) {
+    option (google.api.http) = {
+      get: "/api/message/v1/history",
+    };
+  }
+  rpc RecallMessage (RecallMessageRequest) returns (RecallMessageReply) {
+    option (google.api.http) = {
+      get: "/api/message/v1/recall",
     };
   }
 }
@@ -35,19 +40,25 @@ message Content {
 
 // request-reply
 
-message ChatHistoryRequest {
-  int32 sender_uid = 1;
-  int32 recver_uid = 2;
-  int32 page = 3;
-  int32 count = 4;
-}
-message ChatHistoryReply {
-  repeated Message msgs = 1;
-}
-
 message SendMessageRequest {
   int32 sender_uid = 1;
   int32 recver_uid = 2;
   Content content = 3;
 }
 message SendMessageReply {}
+
+message MessageHistoryRequest {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+  int32 page = 3;
+  int32 count = 4;
+}
+message MessageHistoryReply {
+  repeated Message msgs = 1;
+}
+
+message RecallMessageRequest {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+}
+message RecallMessageReply {}

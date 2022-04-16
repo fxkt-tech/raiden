@@ -22,6 +22,11 @@ func NewMessageSystemRepo(data *Data, logger log.Logger) biz.MessageSystemRepo {
 func (r *messageSystemRepo) SendMessage(ctx context.Context, m *biz.Message) error {
 	return nil
 }
-func (r *messageSystemRepo) ChatHistory(ctx context.Context, ms *biz.MessageSearch) ([]*biz.Message, error) {
+
+func (r *messageSystemRepo) MessageHistory(ctx context.Context, ms *biz.MessageSearch) ([]*biz.Message, error) {
 	return nil, nil
+}
+
+func (r *messageSystemRepo) RecallMessage(ctx context.Context, ms *biz.MessageSearch) error {
+	return nil
 }
