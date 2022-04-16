@@ -55,6 +55,13 @@ api:
 build:
 	mkdir -p bin/ && go build -o ./bin/ ./...
 
+.PHONY: docker-build-debug
+docker-build-debug:
+	make build && cd ../../.. && docker build \
+		-f deploy/debug/Dockerfile \
+		--build-arg APP_RELATIVE_PATH=$(APP_RELATIVE_PATH) \
+		-t $(APP_IMAGE) .
+
 .PHONY: docker-build
 docker-build:
 	cd ../../.. && docker build \
