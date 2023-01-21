@@ -1,0 +1,18 @@
+version: v1
+breaking:
+  use:
+    - FILE
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/envoyproxy/protoc-gen-validate
+  - buf.build/kratos/apis
+lint:
+  ignore_only:
+    ENUM_VALUE_PREFIX:
+      - errs/errs.proto
+    ENUM_ZERO_VALUE_SUFFIX:
+      - errs/errs.proto
+    PACKAGE_DIRECTORY_MATCH:
+      - errs/errs.proto
+  use:
+    - DEFAULT

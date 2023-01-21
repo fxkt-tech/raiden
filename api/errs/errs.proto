@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package errs.v1;
+
+import "errors/errors.proto";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+
+  DATABASE = 0 [(errors.code) = 500];
+  VALIDATOR = 1 [(errors.code) = 400];
+  EXT_API = 2 [(errors.code) = 500];
+  FORBIDDEN = 3 [(errors.code) = 403];
+}

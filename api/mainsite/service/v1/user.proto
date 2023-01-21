@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package mainsite.service.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+service UserService {
+  // 注册用户
+  rpc Register(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/api/user/v1/register",
+      body: "*",
+    };
+  }
+  // 用户信息
+  rpc Info(InfoRequest) returns (InfoResponse) {
+    option (google.api.http) = {get: "/api/user/v1/info"};
+  }
+  // 粉丝列表
+  rpc Followers(FollowersRequest) returns (FollowersResponse) {
+    option (google.api.http) = {get: "/api/user/v1/followers"};
+  }
+  // 关注列表
+  rpc Following(FollowingRequest) returns (FollowingResponse) {
+    option (google.api.http) = {get: "/api/user/v1/following"};
+  }
+  // 关注
+  rpc Relation(RelationRequest) returns (RelationResponse) {
+    option (google.api.http) = {
+      post: "/api/user/v1/relation",
+      body: "*",
+    };
+  }
+}
+
+// model
+
+message User {
+  // 用户id
+  int32 uid = 1;
+  // 用户昵称
+  string nick = 2;
+}
+
+// request-response
+
+message RegisterRequest {
+  string nick = 1 [(validate.rules).string = {
+    min_len: 3,
+    max_len: 8
+  }];
+}
+message RegisterResponse {
+  User user = 1;
+}
+
+message InfoRequest {
+  int32 uid = 1;
+}
+message InfoResponse {
+  User user = 1;
+}
+
+message FollowersRequest {
+  int32 uid = 1 [(validate.rules).int32 = {gt: 0}];
+  int32 page_num = 2;
+  int32 page_size = 3;
+}
+message FollowersResponse {
+  repeated User users = 1;
+  int32 total = 2;
+}
+
+message FollowingRequest {
+  int32 uid = 1 [(validate.rules).int32 = {gt: 0}];
+  int32 page_num = 2;
+  int32 page_size = 3;
+}
+message FollowingResponse {
+  repeated User users = 1;
+  int32 total = 2;
+}
+
+message RelationRequest {
+  int32 active_uid = 1 [(validate.rules).int32 = {gt: 0}];
+  int32 passive_uid = 2 [(validate.rules).int32 = {gt: 0}];
+  int32 action = 3;
+}
+message RelationResponse {}

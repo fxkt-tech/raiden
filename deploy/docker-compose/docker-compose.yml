@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   user-service:
-    image: fxkt.tech/raiden/user-service:latest
+    image: github.com/fxkt-tech/raiden/user-service:latest
     hostname: user-service
     ports:
       - 8000:8000
@@ -11,7 +11,7 @@ services:
     networks:
       - common
   feed-service:
-    image: fxkt.tech/raiden/feed-service:latest
+    image: github.com/fxkt-tech/raiden/feed-service:latest
     hostname: feed-service
     ports:
       - 8001:8000

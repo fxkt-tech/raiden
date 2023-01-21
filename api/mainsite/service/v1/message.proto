@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package mainsite.service.v1;
+
+import "google/api/annotations.proto";
+
+service MessageService {
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {
+    option (google.api.http) = {
+      post: "/api/message/v1/send",
+      body: "*",
+    };
+  }
+  rpc MessageHistory(MessageHistoryRequest) returns (MessageHistoryResponse) {
+    option (google.api.http) = {get: "/api/message/v1/history"};
+  }
+  rpc RecallMessage(RecallMessageRequest) returns (RecallMessageResponse) {
+    option (google.api.http) = {get: "/api/message/v1/recall"};
+  }
+}
+
+// model
+
+message Message {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+  Content content = 3;
+  int64 ctime = 4;
+}
+
+message Content {
+  string text = 1;
+}
+
+// request-reply
+
+message SendMessageRequest {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+  Content content = 3;
+}
+message SendMessageResponse {}
+
+message MessageHistoryRequest {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+  int32 page = 3;
+  int32 count = 4;
+}
+message MessageHistoryResponse {
+  repeated Message msgs = 1;
+}
+
+message RecallMessageRequest {
+  int32 sender_uid = 1;
+  int32 recver_uid = 2;
+}
+message RecallMessageResponse {}
